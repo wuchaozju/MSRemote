@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>A63D77F8-DDFB-4BF5-9997-7543F7BC4F6B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>GPSMSRemote</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E1370CACEE386DAD2ACC3CFF036ABC0780A5E64A</key>
+		<string>https://github.com/wuchaozju/MSRemote.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>GPSMSRemote/GPSMSRemote.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E1370CACEE386DAD2ACC3CFF036ABC0780A5E64A</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/wuchaozju/MSRemote.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E1370CACEE386DAD2ACC3CFF036ABC0780A5E64A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E1370CACEE386DAD2ACC3CFF036ABC0780A5E64A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MSRemote</string>
+		</dict>
+	</array>
+</dict>
+</plist>
