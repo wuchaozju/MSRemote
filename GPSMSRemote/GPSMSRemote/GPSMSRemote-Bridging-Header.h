@@ -13,4 +13,6 @@
 #import "JBChartView/JBBarChartView.h"
 #import "JBChartView/JBLineChartView.h"
 
+#import <Parse/Parse.h>
+
 #endif
