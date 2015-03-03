@@ -28,12 +28,6 @@
 		E55D13841AA139ED009F0435 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55D13831AA139ED009F0435 /* StoreKit.framework */; };
 		E55D13861AA139F5009F0435 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55D13851AA139F5009F0435 /* SystemConfiguration.framework */; };
 		E55D13881AA139FF009F0435 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E55D13871AA139FF009F0435 /* libsqlite3.dylib */; };
-		E584884F1AA6589F0080AC15 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E584884A1AA6589F0080AC15 /* Bolts.framework */; };
-		E58488501AA6589F0080AC15 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E584884B1AA6589F0080AC15 /* Parse.framework */; };
-		E58488511AA6589F0080AC15 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E584884C1AA6589F0080AC15 /* ParseCrashReporting.framework */; };
-		E58488521AA6589F0080AC15 /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E584884D1AA6589F0080AC15 /* ParseFacebookUtils.framework */; };
-		E58488531AA6589F0080AC15 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E584884E1AA6589F0080AC15 /* ParseUI.framework */; };
-		E584885E1AA65CB20080AC15 /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = E584885D1AA65CB20080AC15 /* Test.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +47,7 @@
 		3BAE6C811AA612880072C66D /* JBChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBChartView.m; sourceTree = "<group>"; };
 		3BAE6C821AA612880072C66D /* JBLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLineChartView.h; sourceTree = "<group>"; };
 		3BAE6C831AA612880072C66D /* JBLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLineChartView.m; sourceTree = "<group>"; };
+		3BAE6C871AA612E50072C66D /* GPSMSRemote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GPSMSRemote-Bridging-Header.h"; sourceTree = "<group>"; };
 		3BED1C111AA542040033EAE9 /* GPSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSViewController.swift; sourceTree = "<group>"; };
 		E55D134C1AA1370E009F0435 /* GPSMSRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPSMSRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55D13501AA1370E009F0435 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -75,13 +70,6 @@
 		E55D13831AA139ED009F0435 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		E55D13851AA139F5009F0435 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E55D13871AA139FF009F0435 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		E584884A1AA6589F0080AC15 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		E584884B1AA6589F0080AC15 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
-		E584884C1AA6589F0080AC15 /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
-		E584884D1AA6589F0080AC15 /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
-		E584884E1AA6589F0080AC15 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
-		E584885C1AA65BAC0080AC15 /* GPSMSRemote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GPSMSRemote-Bridging-Header.h"; sourceTree = "<group>"; };
-		E584885D1AA65CB20080AC15 /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,13 +80,8 @@
 				E55D13881AA139FF009F0435 /* libsqlite3.dylib in Frameworks */,
 				E55D13861AA139F5009F0435 /* SystemConfiguration.framework in Frameworks */,
 				E55D13841AA139ED009F0435 /* StoreKit.framework in Frameworks */,
-				E584884F1AA6589F0080AC15 /* Bolts.framework in Frameworks */,
 				E55D13821AA139E5009F0435 /* Security.framework in Frameworks */,
-				E58488511AA6589F0080AC15 /* ParseCrashReporting.framework in Frameworks */,
-				E58488531AA6589F0080AC15 /* ParseUI.framework in Frameworks */,
 				E55D13801AA139DB009F0435 /* QuartzCore.framework in Frameworks */,
-				E58488501AA6589F0080AC15 /* Parse.framework in Frameworks */,
-				E58488521AA6589F0080AC15 /* ParseFacebookUtils.framework in Frameworks */,
 				E55D137E1AA139D1009F0435 /* MobileCoreServices.framework in Frameworks */,
 				E55D137C1AA139C8009F0435 /* libz.dylib in Frameworks */,
 				E55D137A1AA137E1009F0435 /* CoreLocation.framework in Frameworks */,
@@ -121,22 +104,6 @@
 		3BAE6C7C1AA611F10072C66D /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				E55D13871AA139FF009F0435 /* libsqlite3.dylib */,
-				E55D13851AA139F5009F0435 /* SystemConfiguration.framework */,
-				E55D13831AA139ED009F0435 /* StoreKit.framework */,
-				E55D13811AA139E5009F0435 /* Security.framework */,
-				E55D137F1AA139DB009F0435 /* QuartzCore.framework */,
-				E55D137D1AA139D1009F0435 /* MobileCoreServices.framework */,
-				E55D137B1AA139C8009F0435 /* libz.dylib */,
-				E55D13791AA137E1009F0435 /* CoreLocation.framework */,
-				E55D13771AA137D6009F0435 /* CoreGraphics.framework */,
-				E55D13751AA137C6009F0435 /* CFNetwork.framework */,
-				E55D13731AA137B8009F0435 /* AudioToolbox.framework */,
-				E584884A1AA6589F0080AC15 /* Bolts.framework */,
-				E584884B1AA6589F0080AC15 /* Parse.framework */,
-				E584884C1AA6589F0080AC15 /* ParseCrashReporting.framework */,
-				E584884D1AA6589F0080AC15 /* ParseFacebookUtils.framework */,
-				E584884E1AA6589F0080AC15 /* ParseUI.framework */,
 				3BAE6C7D1AA612880072C66D /* JBChartView */,
 			);
 			name = Libraries;
@@ -158,6 +125,17 @@
 		E55D13431AA1370E009F0435 = {
 			isa = PBXGroup;
 			children = (
+				E55D13871AA139FF009F0435 /* libsqlite3.dylib */,
+				E55D13851AA139F5009F0435 /* SystemConfiguration.framework */,
+				E55D13831AA139ED009F0435 /* StoreKit.framework */,
+				E55D13811AA139E5009F0435 /* Security.framework */,
+				E55D137F1AA139DB009F0435 /* QuartzCore.framework */,
+				E55D137D1AA139D1009F0435 /* MobileCoreServices.framework */,
+				E55D137B1AA139C8009F0435 /* libz.dylib */,
+				E55D13791AA137E1009F0435 /* CoreLocation.framework */,
+				E55D13771AA137D6009F0435 /* CoreGraphics.framework */,
+				E55D13751AA137C6009F0435 /* CFNetwork.framework */,
+				E55D13731AA137B8009F0435 /* AudioToolbox.framework */,
 				E55D134E1AA1370E009F0435 /* GPSMSRemote */,
 				E55D13661AA1370E009F0435 /* GPSMSRemoteTests */,
 				E55D134D1AA1370E009F0435 /* Products */,
@@ -176,16 +154,15 @@
 		E55D134E1AA1370E009F0435 /* GPSMSRemote */ = {
 			isa = PBXGroup;
 			children = (
-				E584885C1AA65BAC0080AC15 /* GPSMSRemote-Bridging-Header.h */,
 				3BED1C111AA542040033EAE9 /* GPSViewController.swift */,
 				E55D13511AA1370E009F0435 /* AppDelegate.swift */,
 				E55D13551AA1370E009F0435 /* MSViewController.swift */,
 				E55D13571AA1370E009F0435 /* Main.storyboard */,
 				E55D135A1AA1370E009F0435 /* Images.xcassets */,
 				E55D135C1AA1370E009F0435 /* LaunchScreen.xib */,
+				3BAE6C871AA612E50072C66D /* GPSMSRemote-Bridging-Header.h */,
 				3BAE6C7C1AA611F10072C66D /* Libraries */,
 				E55D134F1AA1370E009F0435 /* Supporting Files */,
-				E584885D1AA65CB20080AC15 /* Test.m */,
 			);
 			path = GPSMSRemote;
 			sourceTree = "<group>";
@@ -324,7 +301,6 @@
 				3BAE6C861AA612880072C66D /* JBLineChartView.m in Sources */,
 				3BAE6C841AA612880072C66D /* JBBarChartView.m in Sources */,
 				3BED1C121AA542040033EAE9 /* GPSViewController.swift in Sources */,
-				E584885E1AA65CB20080AC15 /* Test.m in Sources */,
 				3BAE6C851AA612880072C66D /* JBChartView.m in Sources */,
 				E55D13521AA1370E009F0435 /* AppDelegate.swift in Sources */,
 			);
@@ -453,10 +429,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GPSMSRemote",
-				);
 				INFOPLIST_FILE = GPSMSRemote/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -467,10 +439,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GPSMSRemote",
-				);
 				INFOPLIST_FILE = GPSMSRemote/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
