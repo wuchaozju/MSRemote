@@ -22,33 +22,41 @@ class GPSViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var map: MKMapView!
     @IBAction func Start(sender: AnyObject) {
         if checkButtonState == .Start {
-            switch CLLocationManager.authorizationStatus() {
-            case .Authorized:
-                manager.startUpdatingLocation()
-                map.showsUserLocation = true
-                self.navigationItem.rightBarButtonItem?.enabled = true
-                self.navigationItem.leftBarButtonItem?.title = "Stop Tracking"
-                checkButtonState = .Stop
-                
-            case .NotDetermined:
-                manager.requestAlwaysAuthorization()
-            case .AuthorizedWhenInUse, .Restricted, .Denied:
-                let alertController = UIAlertController(
-                    title: "Background Location Access Disabled",
-                    message: "Please open settings and set location access to 'Always'.",
-                    preferredStyle: .Alert)
-                
-                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-                alertController.addAction(cancelAction)
-                
-                let openAction = UIAlertAction(title: "Settings", style: .Default) { (action) in
-                    if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
-                        UIApplication.sharedApplication().openURL(url)
+            if CLLocationManager.locationServicesEnabled() == false {
+                let alertController = UIAlertController(title: "Location Service OFF", message: "Enable location service for detecting your location. \n (Settings > Privacy > Location Services)", preferredStyle: .Alert)
+                let OkAction = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+                alertController.addAction(OkAction)
+                presentViewController(alertController, animated: false, completion: nil)
+            }
+            else {
+                switch CLLocationManager.authorizationStatus() {
+                case .Authorized:
+                    manager.startUpdatingLocation()
+                    map.showsUserLocation = true
+                    self.navigationItem.rightBarButtonItem?.enabled = true
+                    self.navigationItem.leftBarButtonItem?.title = "Stop Tracking"
+                    checkButtonState = .Stop
+                    
+                case .NotDetermined:
+                    manager.requestAlwaysAuthorization()
+                case .AuthorizedWhenInUse, .Restricted, .Denied:
+                    let alertController = UIAlertController(
+                        title: "Background Location Access Disabled",
+                        message: "Please open settings and set location access to 'Always'.",
+                        preferredStyle: .Alert)
+                    
+                    let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                    alertController.addAction(cancelAction)
+                    
+                    let openAction = UIAlertAction(title: "Settings", style: .Default) { (action) in
+                        if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
+                            UIApplication.sharedApplication().openURL(url)
+                        }
                     }
+                    alertController.addAction(openAction)
+                    
+                    presentViewController(alertController, animated: true, completion: nil)
                 }
-                alertController.addAction(openAction)
-                
-                presentViewController(alertController, animated: true, completion: nil)
             }
         }
             

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BAE6C841AA612880072C66D /* JBBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6C7F1AA612880072C66D /* JBBarChartView.m */; };
+		3BAE6C851AA612880072C66D /* JBChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6C811AA612880072C66D /* JBChartView.m */; };
+		3BAE6C861AA612880072C66D /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BAE6C831AA612880072C66D /* JBLineChartView.m */; };
 		3BED1C121AA542040033EAE9 /* GPSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED1C111AA542040033EAE9 /* GPSViewController.swift */; };
 		E55D13521AA1370E009F0435 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D13511AA1370E009F0435 /* AppDelegate.swift */; };
 		E55D13561AA1370E009F0435 /* MSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D13551AA1370E009F0435 /* MSViewController.swift */; };
@@ -38,6 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3BAE6C7E1AA612880072C66D /* JBBarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBBarChartView.h; sourceTree = "<group>"; };
+		3BAE6C7F1AA612880072C66D /* JBBarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBBarChartView.m; sourceTree = "<group>"; };
+		3BAE6C801AA612880072C66D /* JBChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBChartView.h; sourceTree = "<group>"; };
+		3BAE6C811AA612880072C66D /* JBChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBChartView.m; sourceTree = "<group>"; };
+		3BAE6C821AA612880072C66D /* JBLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLineChartView.h; sourceTree = "<group>"; };
+		3BAE6C831AA612880072C66D /* JBLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLineChartView.m; sourceTree = "<group>"; };
+		3BAE6C871AA612E50072C66D /* GPSMSRemote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GPSMSRemote-Bridging-Header.h"; sourceTree = "<group>"; };
 		3BED1C111AA542040033EAE9 /* GPSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSViewController.swift; sourceTree = "<group>"; };
 		E55D134C1AA1370E009F0435 /* GPSMSRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPSMSRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55D13501AA1370E009F0435 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,6 +101,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3BAE6C7C1AA611F10072C66D /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				3BAE6C7D1AA612880072C66D /* JBChartView */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		3BAE6C7D1AA612880072C66D /* JBChartView */ = {
+			isa = PBXGroup;
+			children = (
+				3BAE6C7E1AA612880072C66D /* JBBarChartView.h */,
+				3BAE6C7F1AA612880072C66D /* JBBarChartView.m */,
+				3BAE6C801AA612880072C66D /* JBChartView.h */,
+				3BAE6C811AA612880072C66D /* JBChartView.m */,
+				3BAE6C821AA612880072C66D /* JBLineChartView.h */,
+				3BAE6C831AA612880072C66D /* JBLineChartView.m */,
+			);
+			path = JBChartView;
+			sourceTree = "<group>";
+		};
 		E55D13431AA1370E009F0435 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +160,8 @@
 				E55D13571AA1370E009F0435 /* Main.storyboard */,
 				E55D135A1AA1370E009F0435 /* Images.xcassets */,
 				E55D135C1AA1370E009F0435 /* LaunchScreen.xib */,
+				3BAE6C871AA612E50072C66D /* GPSMSRemote-Bridging-Header.h */,
+				3BAE6C7C1AA611F10072C66D /* Libraries */,
 				E55D134F1AA1370E009F0435 /* Supporting Files */,
 			);
 			path = GPSMSRemote;
@@ -265,7 +298,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E55D13561AA1370E009F0435 /* MSViewController.swift in Sources */,
+				3BAE6C861AA612880072C66D /* JBLineChartView.m in Sources */,
+				3BAE6C841AA612880072C66D /* JBBarChartView.m in Sources */,
 				3BED1C121AA542040033EAE9 /* GPSViewController.swift in Sources */,
+				3BAE6C851AA612880072C66D /* JBChartView.m in Sources */,
 				E55D13521AA1370E009F0435 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,6 +382,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "GPSMSRemote/GPSMSRemote-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -382,6 +419,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "GPSMSRemote/GPSMSRemote-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
