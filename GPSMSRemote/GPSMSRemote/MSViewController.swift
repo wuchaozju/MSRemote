@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  MSViewController.swift
 //  GPSMSRemote
 //
 //  Created by chao on 27/02/2015.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class MSViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,8 @@ class FirstViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    override func prefersStatusBarHidden() -> Bool {
+        return false
+    }
 }
 

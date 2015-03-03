@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BED1C121AA542040033EAE9 /* GPSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BED1C111AA542040033EAE9 /* GPSViewController.swift */; };
 		E55D13521AA1370E009F0435 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D13511AA1370E009F0435 /* AppDelegate.swift */; };
-		E55D13541AA1370E009F0435 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D13531AA1370E009F0435 /* FirstViewController.swift */; };
-		E55D13561AA1370E009F0435 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D13551AA1370E009F0435 /* SecondViewController.swift */; };
+		E55D13561AA1370E009F0435 /* MSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D13551AA1370E009F0435 /* MSViewController.swift */; };
 		E55D13591AA1370E009F0435 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E55D13571AA1370E009F0435 /* Main.storyboard */; };
 		E55D135B1AA1370E009F0435 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E55D135A1AA1370E009F0435 /* Images.xcassets */; };
 		E55D135E1AA1370E009F0435 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55D135C1AA1370E009F0435 /* LaunchScreen.xib */; };
@@ -38,11 +38,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3BED1C111AA542040033EAE9 /* GPSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GPSViewController.swift; sourceTree = "<group>"; };
 		E55D134C1AA1370E009F0435 /* GPSMSRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPSMSRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55D13501AA1370E009F0435 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E55D13511AA1370E009F0435 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E55D13531AA1370E009F0435 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		E55D13551AA1370E009F0435 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		E55D13551AA1370E009F0435 /* MSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSViewController.swift; sourceTree = "<group>"; };
 		E55D13581AA1370E009F0435 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E55D135A1AA1370E009F0435 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E55D135D1AA1370E009F0435 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -123,9 +123,9 @@
 		E55D134E1AA1370E009F0435 /* GPSMSRemote */ = {
 			isa = PBXGroup;
 			children = (
+				3BED1C111AA542040033EAE9 /* GPSViewController.swift */,
 				E55D13511AA1370E009F0435 /* AppDelegate.swift */,
-				E55D13531AA1370E009F0435 /* FirstViewController.swift */,
-				E55D13551AA1370E009F0435 /* SecondViewController.swift */,
+				E55D13551AA1370E009F0435 /* MSViewController.swift */,
 				E55D13571AA1370E009F0435 /* Main.storyboard */,
 				E55D135A1AA1370E009F0435 /* Images.xcassets */,
 				E55D135C1AA1370E009F0435 /* LaunchScreen.xib */,
@@ -208,6 +208,11 @@
 				TargetAttributes = {
 					E55D134B1AA1370E009F0435 = {
 						CreatedOnToolsVersion = 6.1.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					E55D13621AA1370E009F0435 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -259,9 +264,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E55D13561AA1370E009F0435 /* SecondViewController.swift in Sources */,
+				E55D13561AA1370E009F0435 /* MSViewController.swift in Sources */,
+				3BED1C121AA542040033EAE9 /* GPSViewController.swift in Sources */,
 				E55D13521AA1370E009F0435 /* AppDelegate.swift in Sources */,
-				E55D13541AA1370E009F0435 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +460,7 @@
 				E55D136F1AA1370E009F0435 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E55D13701AA1370E009F0435 /* Build configuration list for PBXNativeTarget "GPSMSRemoteTests" */ = {
 			isa = XCConfigurationList;
@@ -463,6 +469,7 @@
 				E55D13721AA1370E009F0435 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
