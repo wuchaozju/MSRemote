@@ -72,6 +72,7 @@
 		E55D13831AA139ED009F0435 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		E55D13851AA139F5009F0435 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E55D13871AA139FF009F0435 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		E5BA8F1D1AA74FE200F6B097 /* CustomClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomClass.h; sourceTree = "<group>"; };
 		E5ED0AE71AA6650500A06E33 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		E5ED0AE81AA6650500A06E33 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -171,6 +172,7 @@
 				3BAE6C871AA612E50072C66D /* GPSMSRemote-Bridging-Header.h */,
 				3BAE6C7C1AA611F10072C66D /* Libraries */,
 				E55D134F1AA1370E009F0435 /* Supporting Files */,
+				E5BA8F1D1AA74FE200F6B097 /* CustomClass.h */,
 			);
 			path = GPSMSRemote;
 			sourceTree = "<group>";
