@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B6CF6711AB221E20015C5A8 /* JBBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */; };
+		3B6CF6721AB221E20015C5A8 /* JBChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF66E1AB221E20015C5A8 /* JBChartView.m */; };
+		3B6CF6731AB221E20015C5A8 /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */; };
 		E5BA8F2D1AA750A900F6B097 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA8F2C1AA750A900F6B097 /* AppDelegate.swift */; };
 		E5BA8F2F1AA750A900F6B097 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA8F2E1AA750A900F6B097 /* FirstViewController.swift */; };
 		E5BA8F311AA750A900F6B097 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA8F301AA750A900F6B097 /* SecondViewController.swift */; };
@@ -39,6 +42,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B6CF66B1AB221E20015C5A8 /* JBBarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBBarChartView.h; sourceTree = "<group>"; };
+		3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBBarChartView.m; sourceTree = "<group>"; };
+		3B6CF66D1AB221E20015C5A8 /* JBChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBChartView.h; sourceTree = "<group>"; };
+		3B6CF66E1AB221E20015C5A8 /* JBChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBChartView.m; sourceTree = "<group>"; };
+		3B6CF66F1AB221E20015C5A8 /* JBLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLineChartView.h; sourceTree = "<group>"; };
+		3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLineChartView.m; sourceTree = "<group>"; };
 		E5BA8F271AA750A900F6B097 /* MsRemoteNew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MsRemoteNew.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BA8F2B1AA750A900F6B097 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5BA8F2C1AA750A900F6B097 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +104,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B6CF66A1AB221E20015C5A8 /* JBChartView */ = {
+			isa = PBXGroup;
+			children = (
+				3B6CF66B1AB221E20015C5A8 /* JBBarChartView.h */,
+				3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */,
+				3B6CF66D1AB221E20015C5A8 /* JBChartView.h */,
+				3B6CF66E1AB221E20015C5A8 /* JBChartView.m */,
+				3B6CF66F1AB221E20015C5A8 /* JBLineChartView.h */,
+				3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */,
+			);
+			path = JBChartView;
+			sourceTree = "<group>";
+		};
 		E5BA8F1E1AA750A900F6B097 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +179,7 @@
 		E5BA8F641AA7512D00F6B097 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				3B6CF66A1AB221E20015C5A8 /* JBChartView */,
 				E5BA8F621AA7511900F6B097 /* libsqlite3.dylib */,
 				E5BA8F651AA7515700F6B097 /* Bolts.framework */,
 				E5BA8F661AA7515700F6B097 /* Parse.framework */,
@@ -222,7 +245,7 @@
 				TargetAttributes = {
 					E5BA8F261AA750A900F6B097 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = JL6B8ATH8Y;
+						DevelopmentTeam = 59L99SR85U;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -234,6 +257,7 @@
 					};
 					E5BA8F3D1AA750A900F6B097 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 59L99SR85U;
 						TestTargetID = E5BA8F261AA750A900F6B097;
 					};
 				};
@@ -283,7 +307,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5BA8F311AA750A900F6B097 /* SecondViewController.swift in Sources */,
+				3B6CF6731AB221E20015C5A8 /* JBLineChartView.m in Sources */,
+				3B6CF6711AB221E20015C5A8 /* JBBarChartView.m in Sources */,
 				E5BA8F2D1AA750A900F6B097 /* AppDelegate.swift in Sources */,
+				3B6CF6721AB221E20015C5A8 /* JBChartView.m in Sources */,
 				E5BA8F2F1AA750A900F6B097 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
