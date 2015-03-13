@@ -74,7 +74,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         else {
             switch CLLocationManager.authorizationStatus() {
                 
-            case .Authorized:
+            case .AuthorizedAlways:
                 
                 map.showsUserLocation = true
                 self.navigationItem.rightBarButtonItem?.enabled = true
