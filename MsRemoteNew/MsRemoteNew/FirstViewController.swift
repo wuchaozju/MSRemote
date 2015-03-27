@@ -9,12 +9,23 @@
 import UIKit
 import MapKit
 
-class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate  {
+protocol UpdateChartDelegate {
+    func updateChart(newDate: String, speed: Double)
+    func updateChart(speed: Double)
+}
 
+class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
+
+    var chartDelegate: UpdateChartDelegate?
+    
     let slsLocationManager = CLLocationManager()
+    let dataModel = DataModel()
     
     // store locations
     var locationArray: [CLLocation] = []
+    
+    // overlays on mapview for today's track.
+    var overlayArray = [MKPolyline]()
     
     // polyline-speed dic
     var Poly_Speed: [MKPolyline: Double] = [:]
@@ -76,6 +87,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 
             case .AuthorizedAlways:
                 
+                
                 map.showsUserLocation = true
                 self.navigationItem.rightBarButtonItem?.enabled = true
                 
@@ -110,9 +122,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 if thresholdDistance <= 30 {
                     
                     //set the desiredAccuracy. this property only work in Stardard Location Service
-                    
-                    //self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyBest;
-                    
                     
                     // best accuracy for debug
 //                     self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -165,7 +174,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 slsLocationManager.requestAlwaysAuthorization()
                 
             case .AuthorizedWhenInUse, .Restricted, .Denied:
-                
                 // prompt user for changing app setting
                 let alertController = UIAlertController(
                     title: "Background Location Access Disabled",
@@ -185,6 +193,10 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             }
         }
         
+    }
+    
+    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        self.startSLSToMonitorLocationWithSLSByDistanceFilter(10)
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
@@ -221,10 +233,27 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var polyline = MKPolyline(coordinates: &a, count: a.count)
             var speed: Double = calculateSpeed(locationArray[sourceIndex], destination: locationArray[destinationIndex])
             
+            // save data
+            if dataModel.saveData(NSDate(), speed: speed) == false { // new day
+                
+                // remove tracks
+                map.removeOverlays(overlayArray)
+                overlayArray.removeAll(keepCapacity: false)
+                
+                // notify JB Chart VC
+                chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed)
+                
+            } else {
+                // notify JB Chart VC
+                chartDelegate?.updateChart(speed)
+            }
+            
             sync(Poly_Speed) {
                 self.Poly_Speed[polyline] = speed
             }
+            overlayArray.append(polyline)
             map.addOverlay(polyline)
+
         }
         
         var latitude = (location.coordinate.latitude.description as NSString).doubleValue
@@ -234,7 +263,12 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         // parse update
         var object = PFObject(className: "UserLocation")
-        object.addObject("TestUser", forKey: "user")
+        
+        // for stored user ID
+        // use name of current device if no valid user ID is found
+        let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
+        object.addObject(userID, forKey: "user")
+
         object.addObject(point, forKey: "location")
         object.saveEventually { (result:Bool, error:NSError!) -> Void in
             
@@ -245,7 +279,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func calculateSpeed(source: CLLocation, destination: CLLocation) -> Double {
         var distance = source.distanceFromLocation(destination)
         var speed = distance / (destination.timestamp.timeIntervalSinceDate(source.timestamp))
-        return speed > 0 ? speed : 0
+        return min(max(speed, 0), 60)
     }
     
     // find colors for different speeds
@@ -311,20 +345,69 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        if NSUserDefaults.standardUserDefaults().boolForKey("HasLaunched") {
         
+            basicSetup()
+            
+        } else {
+            // if the app is first launched
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "HasLaunched")
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+            userIDInput()
+            
+        }
+    
+    }
+    
+    func basicSetup() {
         // parse setup
         Parse.setApplicationId("FYSavrPyF5gn35uLR9RigzZF69gpfsw3yFdlmGSJ", clientKey: "4Oouc27YpQ6PoFznCnKP1ra5fbvds767FDmnmQz5")
-
-
+        
+        
         // setup map view
         map.delegate = self
         map.mapType = MKMapType.Standard
         
         slsLocationManager.delegate = self
         LaunchLocationUpdate()
+    }
+    
+    // prompt for user ID when first launched
+    func userIDInput() {
+        let alertController = UIAlertController(title: "User ID", message: "Please input your User ID", preferredStyle: .Alert)
+        
+        let DoneAction = UIAlertAction(title: "Done", style: .Default) { (_) in
+            // save user ID
+            let UserIDTextField = alertController.textFields![0] as UITextField
+            NSUserDefaults.standardUserDefaults().setObject(UserIDTextField.text, forKey: "userID")
+            
+            self.basicSetup()
+        }
+        DoneAction.enabled = false
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.delegate = self
+            textField.placeholder = "User ID"
+            
+            NSNotificationCenter.defaultCenter().addObserverForName(UITextFieldTextDidChangeNotification, object: textField, queue: NSOperationQueue.mainQueue()) { (notification) in
+                DoneAction.enabled = textField.text != ""
+            }
+        }
+        
+        alertController.addAction(DoneAction)
+        
+        self.presentViewController(alertController, animated: true) {
+        }
         
     }
-
+    
+    // close the keyboard when pressing return
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
