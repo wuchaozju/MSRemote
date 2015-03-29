@@ -262,17 +262,17 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         let point = PFGeoPoint(latitude:latitude, longitude:longitude)
         
         // parse update
-        var object = PFObject(className: "UserLocation")
-        
-        // for stored user ID
-        // use name of current device if no valid user ID is found
-        let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
-        object.addObject(userID, forKey: "user")
-
-        object.addObject(point, forKey: "location")
-        object.saveEventually { (result:Bool, error:NSError!) -> Void in
-            
-        }
+//        var object = PFObject(className: "UserLocation")
+//        
+//        // for stored user ID
+//        // use name of current device if no valid user ID is found
+//        let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
+//        object.addObject(userID, forKey: "user")
+//
+//        object.addObject(point, forKey: "location")
+//        object.saveEventually { (result:Bool, error:NSError!) -> Void in
+//        
+//        }
     }
     
     // calculate speed between two locations
@@ -361,8 +361,8 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     func basicSetup() {
-        // parse setup
-        Parse.setApplicationId("FYSavrPyF5gn35uLR9RigzZF69gpfsw3yFdlmGSJ", clientKey: "4Oouc27YpQ6PoFznCnKP1ra5fbvds767FDmnmQz5")
+//        // parse setup
+//        Parse.setApplicationId("FYSavrPyF5gn35uLR9RigzZF69gpfsw3yFdlmGSJ", clientKey: "4Oouc27YpQ6PoFznCnKP1ra5fbvds767FDmnmQz5")
         
         
         // setup map view
