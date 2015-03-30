@@ -9,7 +9,6 @@
 import UIKit
 
 class SettingsTableViewController: UITableViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,6 +24,10 @@ class SettingsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    override func prefersStatusBarHidden() -> Bool {
+        return false
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

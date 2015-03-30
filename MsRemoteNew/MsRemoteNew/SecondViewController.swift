@@ -15,21 +15,21 @@ class SecondViewController: UIViewController, JBLineChartViewDelegate, JBLineCha
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
-        let NaviVC = self.tabBarController!.viewControllers![0] as UINavigationController
-        let FirstVC = NaviVC.topViewController as FirstViewController
-        FirstVC.chartDelegate = self
-        
-        // Graph generation
-        lineChartView.dataSource = self
-        lineChartView.delegate = self
-        lineChartView.backgroundColor = UIColor.whiteColor()
-        
-        lineChartView.frame = CGRectMake(0 + 20, 32 + 20, self.view.frame.size.width - 40, self.view.frame.size.height - 49 - 32 - 20);
-        lineChartView.minimumValue = CGFloat(0)
-        lineChartView.maximumValue = CGFloat(60)
-        self.view.addSubview(lineChartView);
-        lineChartView.reloadData();
+//
+//        let NaviVC = self.tabBarController!.viewControllers![0] as UINavigationController
+//        let FirstVC = NaviVC.topViewController as FirstViewController
+//        FirstVC.chartDelegate = self
+//        
+//        // Graph generation
+//        lineChartView.dataSource = self
+//        lineChartView.delegate = self
+//        lineChartView.backgroundColor = UIColor.whiteColor()
+//        
+//        lineChartView.frame = CGRectMake(0 + 20, 32 + 20, self.view.frame.size.width - 40, self.view.frame.size.height - 49 - 32 - 20);
+//        lineChartView.minimumValue = CGFloat(0)
+//        lineChartView.maximumValue = CGFloat(60)
+//        self.view.addSubview(lineChartView);
+//        lineChartView.reloadData();
         
     }
     
@@ -73,12 +73,12 @@ class SecondViewController: UIViewController, JBLineChartViewDelegate, JBLineCha
     }
     
     // delegate methods
-    func updateChart(speed: Double) {
+    func updateChart(speed: Double, time: NSTimeInterval) {
         dataToDisplay.append(speed)
         lineChartView.reloadData();
     }
 
-    func updateChart(newDate: String, speed: Double) {
+    func updateChart(newDate: String, speed: Double, time: NSTimeInterval) {
         dataToDisplay.removeAll(keepCapacity: false)
         dataToDisplay.append(speed)
         lineChartView.reloadData();

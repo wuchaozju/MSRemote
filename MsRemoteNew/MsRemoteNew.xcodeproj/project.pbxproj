@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		3B342E061AC4D9D300B6091C /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B342E051AC4D9D300B6091C /* SettingsTableViewController.swift */; };
+		3B3AD38A1AC834AE000454CF /* CorePlotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AD3891AC834AE000454CF /* CorePlotViewController.swift */; };
+		3B3AD38C1AC8814B000454CF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B3AD38B1AC8814B000454CF /* Social.framework */; };
+		3B3AD3901AC881D9000454CF /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B3AD38F1AC881D9000454CF /* Accounts.framework */; };
 		3B6CF6711AB221E20015C5A8 /* JBBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */; };
 		3B6CF6721AB221E20015C5A8 /* JBChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF66E1AB221E20015C5A8 /* JBChartView.m */; };
 		3B6CF6731AB221E20015C5A8 /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */; };
@@ -47,6 +50,10 @@
 /* Begin PBXFileReference section */
 		30DDC4C9AF8A414251D2F6E1 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		3B342E051AC4D9D300B6091C /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		3B3AD3891AC834AE000454CF /* CorePlotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CorePlotViewController.swift; sourceTree = "<group>"; };
+		3B3AD38B1AC8814B000454CF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		3B3AD38D1AC88159000454CF /* libPods-CorePlot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-CorePlot.a"; path = "Pods/../build/Debug-iphoneos/libPods-CorePlot.a"; sourceTree = "<group>"; };
+		3B3AD38F1AC881D9000454CF /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		3B6CF66B1AB221E20015C5A8 /* JBBarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBBarChartView.h; sourceTree = "<group>"; };
 		3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBBarChartView.m; sourceTree = "<group>"; };
 		3B6CF66D1AB221E20015C5A8 /* JBChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBChartView.h; sourceTree = "<group>"; };
@@ -87,6 +94,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B3AD3901AC881D9000454CF /* Accounts.framework in Frameworks */,
+				3B3AD38C1AC8814B000454CF /* Social.framework in Frameworks */,
 				E5BA8F631AA7511900F6B097 /* libsqlite3.dylib in Frameworks */,
 				E5BA8F611AA7511000F6B097 /* SystemConfiguration.framework in Frameworks */,
 				E5BA8F671AA7515700F6B097 /* Bolts.framework in Frameworks */,
@@ -138,6 +147,9 @@
 		AAF78AB109469D17A7052AAE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3B3AD38F1AC881D9000454CF /* Accounts.framework */,
+				3B3AD38D1AC88159000454CF /* libPods-CorePlot.a */,
+				3B3AD38B1AC8814B000454CF /* Social.framework */,
 				F2343B52A95763C1547767FB /* libPods.a */,
 			);
 			name = Frameworks;
@@ -172,6 +184,7 @@
 				E5BA8F2E1AA750A900F6B097 /* FirstViewController.swift */,
 				E5BA8F301AA750A900F6B097 /* SecondViewController.swift */,
 				3B342E051AC4D9D300B6091C /* SettingsTableViewController.swift */,
+				3B3AD3891AC834AE000454CF /* CorePlotViewController.swift */,
 				E5BA8F321AA750A900F6B097 /* Main.storyboard */,
 				E5BA8F351AA750A900F6B097 /* Images.xcassets */,
 				E5BA8F371AA750A900F6B097 /* LaunchScreen.xib */,
@@ -375,6 +388,7 @@
 				3B6CF6731AB221E20015C5A8 /* JBLineChartView.m in Sources */,
 				3B6CF6711AB221E20015C5A8 /* JBBarChartView.m in Sources */,
 				E5BA8F2D1AA750A900F6B097 /* AppDelegate.swift in Sources */,
+				3B3AD38A1AC834AE000454CF /* CorePlotViewController.swift in Sources */,
 				3B6CF6721AB221E20015C5A8 /* JBChartView.m in Sources */,
 				3BC66AED1AC4F8470013C381 /* DataModel.swift in Sources */,
 				E5BA8F2F1AA750A900F6B097 /* FirstViewController.swift in Sources */,
@@ -513,6 +527,7 @@
 				);
 				INFOPLIST_FILE = MsRemoteNew/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MsRemoteNew/MsRemoteNew-Bridging-Header.h";
@@ -534,6 +549,7 @@
 				);
 				INFOPLIST_FILE = MsRemoteNew/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MsRemoteNew/MsRemoteNew-Bridging-Header.h";

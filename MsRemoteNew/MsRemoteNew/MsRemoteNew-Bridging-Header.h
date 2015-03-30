@@ -4,6 +4,8 @@
 
 #import <Parse/Parse.h>
 
+#import "CorePlot-CocoaTouch.h"
+
 #import "JBChartView/JBChartView.h"
 #import "JBChartView/JBBarChartView.h"
 #import "JBChartView/JBLineChartView.h"

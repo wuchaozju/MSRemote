@@ -24,23 +24,25 @@ class DataModel {
         formatter.dateFormat = "d/M/yyyy"
     }
     
-    func saveData(time: NSDate, speed: Double) -> Bool {
+    func saveData(time: NSDate, speed: Double) -> (Bool, NSTimeInterval) {
         let date = formatter.stringFromDate(time)
-
+        
         // new day begins
         if dateOfTodayStr != date {
             
             dateOfTodayStr = date
             today0AM = formatter.dateFromString(date)!
             
-            DateData[date] = [dataFormat(timeFrom0AM: NSDate().timeIntervalSinceDate(today0AM), speed: speed)]
+            let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
+            DateData[date] = [dataFormat(timeFrom0AM: timeElapsed, speed: speed)]
 
-            return false
+            return (false, timeElapsed)
         }
         
         // for today
-        DateData[date]!.append(dataFormat(timeFrom0AM: NSDate().timeIntervalSinceDate(today0AM), speed: speed))
-        return true
+        let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
+        DateData[date]!.append(dataFormat(timeFrom0AM: timeElapsed, speed: speed))
+        return (true, timeElapsed)
     }
     
 }

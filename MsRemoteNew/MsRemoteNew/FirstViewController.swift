@@ -10,8 +10,8 @@ import UIKit
 import MapKit
 
 protocol UpdateChartDelegate {
-    func updateChart(newDate: String, speed: Double)
-    func updateChart(speed: Double)
+    func updateChart(newDate: String, speed: Double, time: NSTimeInterval)
+    func updateChart(speed: Double, time: NSTimeInterval)
 }
 
 class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
@@ -234,18 +234,19 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var speed: Double = calculateSpeed(locationArray[sourceIndex], destination: locationArray[destinationIndex])
             
             // save data
-            if dataModel.saveData(NSDate(), speed: speed) == false { // new day
+            let (oldday, timeSec) = dataModel.saveData(NSDate(), speed: speed)
+            if oldday == false { // new day
                 
                 // remove tracks
                 map.removeOverlays(overlayArray)
                 overlayArray.removeAll(keepCapacity: false)
                 
-                // notify JB Chart VC
-                chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed)
+                // notify core plot Chart VC
+                chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed, time: timeSec)
                 
             } else {
-                // notify JB Chart VC
-                chartDelegate?.updateChart(speed)
+                // notify core plot Chart VC
+                chartDelegate?.updateChart(speed, time: timeSec)
             }
             
             sync(Poly_Speed) {
