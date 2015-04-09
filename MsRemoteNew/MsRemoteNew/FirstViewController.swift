@@ -218,7 +218,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!){
-        var location:CLLocation = locations.last as CLLocation
+        var location:CLLocation = locations.last as! CLLocation
         
         locationArray.append(location)
                 
@@ -303,7 +303,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKPolyline {
-            let forSpeed: MKPolyline = overlay as MKPolyline
+            let forSpeed: MKPolyline = overlay as! MKPolyline
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
             
             var speed: Double?
@@ -369,7 +369,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         let DoneAction = UIAlertAction(title: "Done", style: .Default) { (_) in
             // save user ID
-            let UserIDTextField = alertController.textFields![0] as UITextField
+            let UserIDTextField = alertController.textFields![0] as! UITextField
             NSUserDefaults.standardUserDefaults().setObject(UserIDTextField.text, forKey: "userID")
             
             self.basicSetup()

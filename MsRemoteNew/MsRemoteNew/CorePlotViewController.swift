@@ -27,8 +27,8 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         self.configurePlot()
         self.configureAxes()
         
-        let NaviVC = self.tabBarController!.viewControllers![0] as UINavigationController
-        let FirstVC = NaviVC.topViewController as FirstViewController
+        let NaviVC = self.tabBarController!.viewControllers![0] as! UINavigationController
+        let FirstVC = NaviVC.topViewController as! FirstViewController
         FirstVC.chartDelegate = self
         FirstVC.LaunchLocationUpdate()
     }
@@ -125,7 +125,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         graph.plotAreaFrame.paddingLeft = CGFloat(40)
         graph.plotAreaFrame.paddingRight = CGFloat(20)
         
-        var plotSpace = graph.defaultPlotSpace as CPTXYPlotSpace
+        var plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.xRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 86400))
         plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 60))
         }
@@ -153,7 +153,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         
     // configure axes
     func configureAxes() {
-        var axisSet = self.graphView.hostedGraph.axisSet as CPTXYAxisSet
+        var axisSet = self.graphView.hostedGraph.axisSet as! CPTXYAxisSet
         
         var axisTextStyle = CPTMutableTextStyle()
         axisTextStyle.color = CPTColor.blackColor()
@@ -193,8 +193,8 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
             xLocations.addObject(location)
         }
 
-        x.axisLabels = xLabels
-        x.majorTickLocations = xLocations
+        x.axisLabels = xLabels as Set<NSObject>
+        x.majorTickLocations = xLocations as Set<NSObject>
         
         // for y axis
         var y = axisSet.yAxis
@@ -219,8 +219,8 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
             yLabels.addObject(label)
             yLocations.addObject(location)
         }
-        y.axisLabels = yLabels
-        y.majorTickLocations = yLocations
+        y.axisLabels = yLabels as Set<NSObject>
+        y.majorTickLocations = yLocations as Set<NSObject>
     }
     
     /*

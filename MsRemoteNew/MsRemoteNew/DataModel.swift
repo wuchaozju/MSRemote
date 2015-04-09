@@ -143,10 +143,10 @@ class DataModel {
             query.whereKey("groupOfDay", equalTo: i)
             query.limit = 1000
             
-            let objects = query.findObjects() as [PFObject]
+            let objects = query.findObjects() as! [PFObject]
             for object in objects {
-                speedArray.append(object["speed"] as Double)
-                timeArray.append(object["timePoint"] as Double)
+                speedArray.append(object["speed"] as! Double)
+                timeArray.append(object["timePoint"] as! Double)
             }
         }
         return (speedArray, timeArray)

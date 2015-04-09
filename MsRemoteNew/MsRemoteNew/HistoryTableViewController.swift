@@ -64,7 +64,7 @@ class HistoryTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(History.ReuseIdentifier, forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(History.ReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
 
         // Configure the cell...
         cell.textLabel?.text = dateFormatter(datesWithRecords[indexPath.row].date)
@@ -84,7 +84,7 @@ class HistoryTableViewController: UITableViewController {
             switch identifier {
             case History.SegueIdentifier:
                 if let NaviVC = segue.destinationViewController as? UINavigationController {
-                    let HistoryVC = NaviVC.topViewController as HistoryViewController
+                    let HistoryVC = NaviVC.topViewController as! HistoryViewController
                     HistoryVC.NumOfRecords = selectedData.records
                     HistoryVC.day = selectedData.date
                     HistoryVC.formattedDate = dateFormatter(selectedData.date)

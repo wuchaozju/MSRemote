@@ -78,7 +78,7 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
         graph.plotAreaFrame.paddingLeft = CGFloat(40)
         graph.plotAreaFrame.paddingRight = CGFloat(20)
         
-        var plotSpace = graph.defaultPlotSpace as CPTXYPlotSpace
+        var plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.xRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 86400))
         plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 60))
     }
@@ -106,7 +106,7 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
     
     // configure axes
     func configureAxes() {
-        var axisSet = self.graphView.hostedGraph.axisSet as CPTXYAxisSet
+        var axisSet = self.graphView.hostedGraph.axisSet as! CPTXYAxisSet
         
         var axisTextStyle = CPTMutableTextStyle()
         axisTextStyle.color = CPTColor.blackColor()
@@ -146,8 +146,8 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
             xLocations.addObject(location)
         }
         
-        x.axisLabels = xLabels
-        x.majorTickLocations = xLocations
+        x.axisLabels = xLabels as Set<NSObject>
+        x.majorTickLocations = xLocations as Set<NSObject>
         
         // for y axis
         var y = axisSet.yAxis
@@ -172,8 +172,8 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
             yLabels.addObject(label)
             yLocations.addObject(location)
         }
-        y.axisLabels = yLabels
-        y.majorTickLocations = yLocations
+        y.axisLabels = yLabels as Set<NSObject>
+        y.majorTickLocations = yLocations as Set<NSObject>
     }
 
     /*
