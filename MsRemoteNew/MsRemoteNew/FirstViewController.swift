@@ -12,6 +12,7 @@ import MapKit
 protocol UpdateChartDelegate {
     func updateChart(newDate: String, speed: Double, time: NSTimeInterval)
     func updateChart(speed: Double, time: NSTimeInterval)
+    func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double])
 }
 
 class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
@@ -19,7 +20,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     var chartDelegate: UpdateChartDelegate?
     
     let slsLocationManager = CLLocationManager()
-    let dataModel = DataModel()
+    var dataModel: DataModel!
     
     // store locations
     var locationArray: [CLLocation] = []
@@ -223,6 +224,11 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 
         // draw on map
         if (locationArray.count > 1){
+            // get location
+            let latitude = (location.coordinate.latitude.description as NSString).doubleValue
+            let longitude = (location.coordinate.longitude.description as NSString).doubleValue
+            
+            // get speed
             let sourceIndex = locationArray.count - 2
             let destinationIndex = locationArray.count - 1
             
@@ -230,11 +236,20 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             let c2 = locationArray[destinationIndex].coordinate
             var a = [c1, c2]
             
-            var polyline = MKPolyline(coordinates: &a, count: a.count)
-            var speed: Double = calculateSpeed(locationArray[sourceIndex], destination: locationArray[destinationIndex])
+            let polyline = MKPolyline(coordinates: &a, count: a.count)
+            let speed: Double = calculateSpeed(locationArray[sourceIndex], destination: locationArray[destinationIndex])
+            
+            // get time
+            let currentTime = NSDate()
             
             // save data
-            let (oldday, timeSec) = dataModel.saveData(NSDate(), speed: speed)
+            if dataModel == nil {
+                dataModel = DataModel()
+                if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(currentTime) {
+                    chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
+                }
+            }
+            let (oldday, timeSec) = dataModel.saveData(currentTime, speed: speed, latitude: latitude, longitude: longitude)
             if oldday == false { // new day
                 
                 // remove tracks
@@ -257,23 +272,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
 
         }
         
-        var latitude = (location.coordinate.latitude.description as NSString).doubleValue
-        var longitude = (location.coordinate.longitude.description as NSString).doubleValue
-        
-        let point = PFGeoPoint(latitude:latitude, longitude:longitude)
-        
-        // parse update
-//        var object = PFObject(className: "UserLocation")
-//        
-//        // for stored user ID
-//        // use name of current device if no valid user ID is found
-//        let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
-//        object.addObject(userID, forKey: "user")
-//
-//        object.addObject(point, forKey: "location")
-//        object.saveEventually { (result:Bool, error:NSError!) -> Void in
-//        
-//        }
     }
     
     // calculate speed between two locations
@@ -332,13 +330,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         return nil
     }
     
-    // for similar synchronised method in objc
-    func sync(lock: AnyObject, closure: () -> Void) {
-        objc_sync_enter(lock)
-        closure()
-        objc_sync_exit(lock)
-    }
-    
     override func prefersStatusBarHidden() -> Bool {
         return false
     }
@@ -358,20 +349,18 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             userIDInput()
             
         }
-    
     }
     
     func basicSetup() {
-//        // parse setup
-//        Parse.setApplicationId("FYSavrPyF5gn35uLR9RigzZF69gpfsw3yFdlmGSJ", clientKey: "4Oouc27YpQ6PoFznCnKP1ra5fbvds767FDmnmQz5")
-        
         
         // setup map view
         map.delegate = self
         map.mapType = MKMapType.Standard
         
         slsLocationManager.delegate = self
-        LaunchLocationUpdate()
+        tabBarController?.selectedIndex = 1
+        
+//        LaunchLocationUpdate()
     }
     
     // prompt for user ID when first launched

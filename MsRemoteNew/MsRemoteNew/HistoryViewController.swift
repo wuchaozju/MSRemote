@@ -1,38 +1,36 @@
 //
-//  CorePlotViewController.swift
+//  HistoryViewController.swift
 //  MsRemoteNew
 //
-//  Created by Simiao Yu on 29/03/2015.
+//  Created by Simiao Yu on 05/04/2015.
 //  Copyright (c) 2015 Imperial College London. All rights reserved.
 //
 
 import UIKit
 
-class CorePlotViewController: UIViewController, UIPopoverPresentationControllerDelegate,CPTPlotDataSource, UpdateChartDelegate {
+class HistoryViewController: UIViewController, CPTPlotDataSource {
     
-    private struct History {
-        static let SegueIdentifier = "Show History Table"
-    }
-    
+    var dataModel = DataModel()
     var graphView: CPTGraphHostingView!
     var timeData = [Double]()
     var speedData = [Double]()
+    var day: NSDate!
+    var formattedDate: String!
+    var NumOfRecords: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
 
+        // Do any additional setup after loading the view.
         self.configureHost()
         self.configureGraph()
         self.configurePlot()
         self.configureAxes()
         
-        let NaviVC = self.tabBarController!.viewControllers![0] as UINavigationController
-        let FirstVC = NaviVC.topViewController as FirstViewController
-        FirstVC.chartDelegate = self
-        FirstVC.LaunchLocationUpdate()
-    }
+        (speedData, timeData) = dataModel.getHistoryTimeSpeedData(NumOfRecords, day: day)
 
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -54,58 +52,13 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
             return speedData[Int(idx)]
         }
     }
-    
-    // delegate methods for retrieving data
-    func updateChart(speed: Double, time: NSTimeInterval) {
-        speedData.append(speed)
-        timeData.append(time)
-        
-        // reload data for only newly-added point
-        self.graphView.hostedGraph.plotAtIndex(0).reloadDataInIndexRange(NSMakeRange(speedData.count - 1, 1))
-    }
-    
-    func updateChart(newDate: String, speed: Double, time: NSTimeInterval) {
-        speedData.removeAll(keepCapacity: false)
-        timeData.removeAll(keepCapacity: false)
-        
-        timeData.append(time)
-        speedData.append(speed)
-        
-        self.graphView.hostedGraph.plotAtIndex(0).reloadData()
-    }
-    
-    func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double]) {
-        speedData = speedArray
-        timeData = timeArray
-        self.graphView.hostedGraph.plotAtIndex(0).reloadData()
-    }
-    
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier {
-            switch identifier {
-            case History.SegueIdentifier:
-                if let tableVC = segue.destinationViewController as? UITableViewController {
-                    if let ppc = tableVC.popoverPresentationController {
-                        ppc.delegate = self
-                    }
-                }
-            default: break
-            }
-        }
-    }
-    
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.None
-    }
-    
+
     // create host view
     func configureHost() {
-        let tabBarHeight = self.tabBarController!.tabBar.frame.size.height
         let naviBarHeight = self.navigationController!.navigationBar.frame.size.height
         let statusHeight = UIApplication.sharedApplication().statusBarFrame.size.height
         
-        graphView = CPTGraphHostingView(frame: CGRect(x: 0, y: naviBarHeight + statusHeight, width: self.view.frame.width, height: self.view.frame.height - naviBarHeight - statusHeight - tabBarHeight))
+        graphView = CPTGraphHostingView(frame: CGRect(x: 0, y: naviBarHeight + statusHeight, width: self.view.frame.width, height: self.view.frame.height - naviBarHeight - statusHeight))
         graphView.allowPinchScaling = false
         self.view.addSubview(graphView)
     }
@@ -114,7 +67,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     func configureGraph() {
         var graph = CPTXYGraph(frame: graphView.bounds)
         graphView.hostedGraph = graph
-        //        graph.title = ""
+        graph.title = "\(formattedDate) with \(NumOfRecords) records"
         graph.paddingBottom = CGFloat(0)
         graph.paddingTop = CGFloat(0)
         graph.paddingLeft = CGFloat(0)
@@ -128,7 +81,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         var plotSpace = graph.defaultPlotSpace as CPTXYPlotSpace
         plotSpace.xRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 86400))
         plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 60))
-        }
+    }
     
     // configure plot
     func configurePlot() {
@@ -144,13 +97,13 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         plotSymbol.fill = CPTFill(color: CPTColor.blueColor())
         scatPlot.plotSymbol = plotSymbol
         
-//        // configure plot styles
-//        var plotLineStyle = scatPlot.dataLineStyle.mutableCopy() as CPTMutableLineStyle
-//        plotLineStyle.lineWidth = 0.5
-//        plotLineStyle.lineColor = CPTColor.blueColor()
-//        scatPlot.dataLineStyle = plotLineStyle
+        //        // configure plot styles
+        //        var plotLineStyle = scatPlot.dataLineStyle.mutableCopy() as CPTMutableLineStyle
+        //        plotLineStyle.lineWidth = 0.5
+        //        plotLineStyle.lineColor = CPTColor.blueColor()
+        //        scatPlot.dataLineStyle = plotLineStyle
     }
-        
+    
     // configure axes
     func configureAxes() {
         var axisSet = self.graphView.hostedGraph.axisSet as CPTXYAxisSet
@@ -192,7 +145,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
             xLabels.addObject(label)
             xLocations.addObject(location)
         }
-
+        
         x.axisLabels = xLabels
         x.majorTickLocations = xLocations
         
@@ -222,7 +175,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         y.axisLabels = yLabels
         y.majorTickLocations = yLocations
     }
-    
+
     /*
     // MARK: - Navigation
 
