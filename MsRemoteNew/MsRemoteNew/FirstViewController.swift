@@ -32,6 +32,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     var Poly_Speed: [MKPolyline: Double] = [:]
     
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var legendView: UIView!
     
     @IBAction func currentLoc(sender: AnyObject) {
         let spanX = 0.007
@@ -126,7 +127,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     
                     // best accuracy for debug
 //                     self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyBest
-                    self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+                    self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyBest
                     
                 }else{
                     
@@ -197,7 +198,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        self.startSLSToMonitorLocationWithSLSByDistanceFilter(10)
+        LaunchLocationUpdate()
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
@@ -219,6 +220,11 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!){
         var location:CLLocation = locations.last as! CLLocation
+        // discard bad data
+        let accuracyInMeter = location.horizontalAccuracy
+        if accuracyInMeter < 0 {
+            return
+        }
         
         locationArray.append(location)
                 
@@ -249,7 +255,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
                 }
             }
-            let (oldday, timeSec) = dataModel.saveData(currentTime, speed: speed, latitude: latitude, longitude: longitude)
+            let (oldday, timeSec) = dataModel.saveData(currentTime, speed: speed, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter)
             if oldday == false { // new day
                 
                 // remove tracks
@@ -278,26 +284,20 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func calculateSpeed(source: CLLocation, destination: CLLocation) -> Double {
         var distance = source.distanceFromLocation(destination)
         var speed = distance / (destination.timestamp.timeIntervalSinceDate(source.timestamp))
-        return min(max(speed, 0), 60)
+        return min(max(speed, 0), 2)
     }
     
     // find colors for different speeds
     func findColorForSpeed(speed: Double) -> UIColor{
         switch speed {
-        case 0..<1.5:
+        case 0..<0.7:
             return UIColor.redColor()
-        case 1.5..<3:
-            return UIColor.orangeColor()
-        case 3..<6:
-            return UIColor.yellowColor()
-        case 6..<10:
+        case 0.7..<1.4:
             return UIColor.greenColor()
-        case 10..<15:
-            return UIColor.cyanColor()
-        case 15..<27:
+        case 1.4..<2.0:
             return UIColor.blueColor()
         default:
-            return UIColor.brownColor()
+            return UIColor.blackColor()
         }
     }
     
@@ -357,10 +357,14 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         map.delegate = self
         map.mapType = MKMapType.Standard
         
+        // setup legend view
+        legendView.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
+        view.addSubview(legendView)
+        
         slsLocationManager.delegate = self
         tabBarController?.selectedIndex = 1
         
-//        LaunchLocationUpdate()
+        LaunchLocationUpdate()
     }
     
     // prompt for user ID when first launched

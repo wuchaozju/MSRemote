@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -21,6 +21,159 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="LOd-hU-RrK">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CWI-DI-MID" userLabel="legengView">
+                                <rect key="frame" x="498" y="72" width="86" height="95"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oYZ-0q-aC6">
+                                        <rect key="frame" x="6" y="18" width="88" height="12"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="88" id="4RQ-z9-ZAP"/>
+                                            <constraint firstAttribute="height" constant="12" id="4vF-8j-O5E"/>
+                                        </constraints>
+                                        <attributedString key="attributedText">
+                                            <fragment content="◼︎◼︎">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="AppleMyungjo"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content=" ">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="STIXGeneral-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="0.0-0.7">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <font key="NSOriginalFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mwx-Nk-ASL">
+                                        <rect key="frame" x="6" y="0.0" width="88" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="88" id="6sQ-5E-opy"/>
+                                            <constraint firstAttribute="height" constant="15" id="9R9-aE-YcV"/>
+                                        </constraints>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Speed: m/s">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <font key="NSOriginalFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1t9-5R-Ie1">
+                                        <rect key="frame" x="6" y="38" width="88" height="12"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="88" id="DGB-Oc-cqq"/>
+                                            <constraint firstAttribute="height" constant="12" id="lFf-xJ-P4B"/>
+                                        </constraints>
+                                        <attributedString key="attributedText">
+                                            <fragment content="◼︎◼︎">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="AppleMyungjo"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content=" ">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="STIXGeneral-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="0.7-1.4">
+                                                <attributes>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ar-MN-WgI">
+                                        <rect key="frame" x="6" y="58" width="88" height="12"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="12" id="bnu-ap-hoJ"/>
+                                            <constraint firstAttribute="width" constant="88" id="s0J-Mx-Tac"/>
+                                        </constraints>
+                                        <attributedString key="attributedText">
+                                            <fragment content="◼︎◼︎ ">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="AppleMyungjo"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="1.4-2.0">
+                                                <attributes>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rd3-Ib-tCl">
+                                        <rect key="frame" x="6" y="78" width="88" height="12"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="12" id="WTr-gG-wbw"/>
+                                            <constraint firstAttribute="width" constant="88" id="dTX-8f-MvW"/>
+                                        </constraints>
+                                        <attributedString key="attributedText">
+                                            <fragment content="◼︎◼︎">
+                                                <attributes>
+                                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="AppleMyungjo"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content=" ">
+                                                <attributes>
+                                                    <color key="NSColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <font key="NSFont" size="14" name="STIXGeneral-Regular"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="N/A">
+                                                <attributes>
+                                                    <font key="NSFont" size="14" name="HelveticaNeue-Bold"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="95" id="1ew-89-JWy"/>
+                                    <constraint firstItem="Rd3-Ib-tCl" firstAttribute="top" secondItem="0ar-MN-WgI" secondAttribute="bottom" constant="8" symbolic="YES" id="53E-r7-9VK"/>
+                                    <constraint firstItem="Mwx-Nk-ASL" firstAttribute="leading" secondItem="oYZ-0q-aC6" secondAttribute="leading" id="940-kM-12p"/>
+                                    <constraint firstItem="oYZ-0q-aC6" firstAttribute="leading" secondItem="1t9-5R-Ie1" secondAttribute="leading" id="D2u-fF-vYR"/>
+                                    <constraint firstItem="1t9-5R-Ie1" firstAttribute="leading" secondItem="0ar-MN-WgI" secondAttribute="leading" id="Du9-K6-ce6"/>
+                                    <constraint firstItem="0ar-MN-WgI" firstAttribute="leading" secondItem="Rd3-Ib-tCl" secondAttribute="leading" id="DvQ-Ml-2Kc"/>
+                                    <constraint firstItem="oYZ-0q-aC6" firstAttribute="leading" secondItem="CWI-DI-MID" secondAttribute="leading" constant="6" id="O4K-tm-0I4"/>
+                                    <constraint firstItem="Mwx-Nk-ASL" firstAttribute="top" secondItem="CWI-DI-MID" secondAttribute="top" id="cch-8s-DyW"/>
+                                    <constraint firstItem="0ar-MN-WgI" firstAttribute="top" secondItem="1t9-5R-Ie1" secondAttribute="bottom" constant="8" symbolic="YES" id="e1e-Qn-ZbG"/>
+                                    <constraint firstItem="oYZ-0q-aC6" firstAttribute="top" secondItem="Mwx-Nk-ASL" secondAttribute="bottom" constant="3" id="hL9-wp-dnc"/>
+                                    <constraint firstAttribute="width" constant="86" id="js5-YW-WqJ"/>
+                                    <constraint firstItem="1t9-5R-Ie1" firstAttribute="top" secondItem="oYZ-0q-aC6" secondAttribute="bottom" constant="8" symbolic="YES" id="p1E-zC-DmH"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -28,10 +181,20 @@
                             <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="LOd-hU-RrK" secondAttribute="bottom" constant="1" id="9db-ls-6Fs">
                                 <variation key="heightClass=compact" constant="0.0"/>
                             </constraint>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="8" symbolic="YES" id="BLn-P1-WkM"/>
+                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="CWI-DI-MID" secondAttribute="bottom" constant="382" id="Co2-RE-Q0K"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LOd-hU-RrK" secondAttribute="bottom" constant="-64" id="GFh-pk-BbG"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="333" id="Hs8-2x-QaC"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" constant="496" id="MSO-ae-Y4P"/>
                             <constraint firstAttribute="trailing" secondItem="LOd-hU-RrK" secondAttribute="trailing" id="Ms9-zA-QyN"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LOd-hU-RrK" secondAttribute="bottom" constant="-65" id="SL7-gF-ThQ"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="376" id="VzO-Qs-EwV"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LOd-hU-RrK" secondAttribute="bottom" id="bFi-sg-eaB"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" constant="504" id="cM6-fV-Ead"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="trailing" secondItem="tsR-hK-woN" secondAttribute="trailingMargin" id="cky-kF-gvg"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="382" id="jwl-xg-ma0"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" constant="496" id="nAy-1K-TJh"/>
+                            <constraint firstItem="CWI-DI-MID" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" constant="476" id="v1Q-dN-FCL"/>
                             <constraint firstItem="LOd-hU-RrK" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="vOl-cX-l2k"/>
                         </constraints>
                         <variation key="default">
@@ -39,13 +202,21 @@
                                 <exclude reference="LOd-hU-RrK"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="9db-ls-6Fs"/>
                                 <exclude reference="4Z8-Qc-XEa"/>
                                 <exclude reference="GFh-pk-BbG"/>
                                 <exclude reference="Ms9-zA-QyN"/>
                                 <exclude reference="SL7-gF-ThQ"/>
                                 <exclude reference="bFi-sg-eaB"/>
                                 <exclude reference="vOl-cX-l2k"/>
+                                <exclude reference="Hs8-2x-QaC"/>
+                                <exclude reference="MSO-ae-Y4P"/>
+                                <exclude reference="VzO-Qs-EwV"/>
+                                <exclude reference="cM6-fV-Ead"/>
+                                <exclude reference="jwl-xg-ma0"/>
+                                <exclude reference="nAy-1K-TJh"/>
+                                <exclude reference="v1Q-dN-FCL"/>
+                                <exclude reference="9db-ls-6Fs"/>
+                                <exclude reference="Co2-RE-Q0K"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
@@ -53,13 +224,13 @@
                                 <include reference="LOd-hU-RrK"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="9db-ls-6Fs"/>
                                 <include reference="4Z8-Qc-XEa"/>
                                 <exclude reference="GFh-pk-BbG"/>
                                 <include reference="Ms9-zA-QyN"/>
                                 <exclude reference="SL7-gF-ThQ"/>
                                 <exclude reference="bFi-sg-eaB"/>
                                 <include reference="vOl-cX-l2k"/>
+                                <include reference="9db-ls-6Fs"/>
                             </mask>
                         </variation>
                     </view>
@@ -71,6 +242,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="legendView" destination="CWI-DI-MID" id="SFv-N7-Uws"/>
                         <outlet property="map" destination="LOd-hU-RrK" id="pg5-u5-cj0"/>
                     </connections>
                 </viewController>
@@ -223,7 +395,16 @@
                     <view key="view" contentMode="scaleToFill" id="psp-oC-1i9">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="KSx-K3-E4L">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="KSx-K3-E4L" secondAttribute="centerX" id="T8W-j3-1dl"/>
+                            <constraint firstAttribute="centerY" secondItem="KSx-K3-E4L" secondAttribute="centerY" id="dHO-Bm-gGj"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6wc-QB-X7j">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="Rd5-0M-9zL">
@@ -232,6 +413,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="spinner" destination="KSx-K3-E4L" id="hJO-W7-AMI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ZB-fA-A2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="UUR-1Y-dGk" userLabel="Exit" sceneMemberID="exit"/>

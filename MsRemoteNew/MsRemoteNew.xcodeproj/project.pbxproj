@@ -12,9 +12,6 @@
 		3B3AD38A1AC834AE000454CF /* CorePlotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AD3891AC834AE000454CF /* CorePlotViewController.swift */; };
 		3B3AD38C1AC8814B000454CF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B3AD38B1AC8814B000454CF /* Social.framework */; };
 		3B3AD3901AC881D9000454CF /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B3AD38F1AC881D9000454CF /* Accounts.framework */; };
-		3B6CF6711AB221E20015C5A8 /* JBBarChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */; };
-		3B6CF6721AB221E20015C5A8 /* JBChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF66E1AB221E20015C5A8 /* JBChartView.m */; };
-		3B6CF6731AB221E20015C5A8 /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */; };
 		3BAC57BF1AD0295B00774367 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC57BE1AD0295B00774367 /* HistoryTableViewController.swift */; };
 		3BC66AED1AC4F8470013C381 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC66AEC1AC4F8470013C381 /* DataModel.swift */; };
 		E5BA8F2D1AA750A900F6B097 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA8F2C1AA750A900F6B097 /* AppDelegate.swift */; };
@@ -56,12 +53,6 @@
 		3B3AD38B1AC8814B000454CF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3B3AD38D1AC88159000454CF /* libPods-CorePlot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-CorePlot.a"; path = "Pods/../build/Debug-iphoneos/libPods-CorePlot.a"; sourceTree = "<group>"; };
 		3B3AD38F1AC881D9000454CF /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
-		3B6CF66B1AB221E20015C5A8 /* JBBarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBBarChartView.h; sourceTree = "<group>"; };
-		3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBBarChartView.m; sourceTree = "<group>"; };
-		3B6CF66D1AB221E20015C5A8 /* JBChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBChartView.h; sourceTree = "<group>"; };
-		3B6CF66E1AB221E20015C5A8 /* JBChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBChartView.m; sourceTree = "<group>"; };
-		3B6CF66F1AB221E20015C5A8 /* JBLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLineChartView.h; sourceTree = "<group>"; };
-		3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLineChartView.m; sourceTree = "<group>"; };
 		3BAC57BE1AD0295B00774367 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		3BC66AEC1AC4F8470013C381 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		8D1C187A5622EF1C5F4C2D9F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -124,19 +115,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3B6CF66A1AB221E20015C5A8 /* JBChartView */ = {
-			isa = PBXGroup;
-			children = (
-				3B6CF66B1AB221E20015C5A8 /* JBBarChartView.h */,
-				3B6CF66C1AB221E20015C5A8 /* JBBarChartView.m */,
-				3B6CF66D1AB221E20015C5A8 /* JBChartView.h */,
-				3B6CF66E1AB221E20015C5A8 /* JBChartView.m */,
-				3B6CF66F1AB221E20015C5A8 /* JBLineChartView.h */,
-				3B6CF6701AB221E20015C5A8 /* JBLineChartView.m */,
-			);
-			path = JBChartView;
-			sourceTree = "<group>";
-		};
 		413FAF3C098F41103653980D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,7 +203,6 @@
 		E5BA8F641AA7512D00F6B097 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				3B6CF66A1AB221E20015C5A8 /* JBChartView */,
 				E5BA8F621AA7511900F6B097 /* libsqlite3.dylib */,
 				E5BA8F651AA7515700F6B097 /* Bolts.framework */,
 				E5BA8F661AA7515700F6B097 /* Parse.framework */,
@@ -387,12 +364,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B6CF6731AB221E20015C5A8 /* JBLineChartView.m in Sources */,
-				3B6CF6711AB221E20015C5A8 /* JBBarChartView.m in Sources */,
 				E5BA8F2D1AA750A900F6B097 /* AppDelegate.swift in Sources */,
 				3B01D3FE1AD0C42500B7EDA6 /* HistoryViewController.swift in Sources */,
 				3B3AD38A1AC834AE000454CF /* CorePlotViewController.swift in Sources */,
-				3B6CF6721AB221E20015C5A8 /* JBChartView.m in Sources */,
 				3BAC57BF1AD0295B00774367 /* HistoryTableViewController.swift in Sources */,
 				3BC66AED1AC4F8470013C381 /* DataModel.swift in Sources */,
 				E5BA8F2F1AA750A900F6B097 /* FirstViewController.swift in Sources */,

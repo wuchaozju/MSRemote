@@ -59,7 +59,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     func updateChart(speed: Double, time: NSTimeInterval) {
         speedData.append(speed)
         timeData.append(time)
-        
+
         // reload data for only newly-added point
         self.graphView.hostedGraph.plotAtIndex(0).reloadDataInIndexRange(NSMakeRange(speedData.count - 1, 1))
     }
@@ -75,8 +75,18 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     }
     
     func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double]) {
-        speedData = speedArray
-        timeData = timeArray
+        var sortedData = [(Double, Double)]()
+        if speedArray.count != 0 && timeArray.count == speedArray.count {
+            for i in 0...speedArray.count-1 {
+                sortedData.append((timeArray[i], speedArray[i]))
+            }
+            sortedData.sort {$0.0 < $1.0}
+            
+            for i in sortedData {
+                timeData.append(i.0)
+                speedData.append(i.1)
+            }
+        }
         self.graphView.hostedGraph.plotAtIndex(0).reloadData()
     }
     
@@ -127,7 +137,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         
         var plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.xRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 86400))
-        plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 60))
+        plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(float: 2.2))
         }
     
     // configure plot
@@ -137,18 +147,16 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         scatPlot.dataSource = self
         self.graphView.hostedGraph.addPlot(scatPlot, toPlotSpace: self.graphView.hostedGraph.defaultPlotSpace)
         
-        scatPlot.dataLineStyle = nil
+        var lineStyle = CPTMutableLineStyle()
+        lineStyle.lineWidth = 1.0
+        lineStyle.lineColor = CPTColor.blueColor()
+        scatPlot.dataLineStyle = lineStyle
         
         var plotSymbol = CPTPlotSymbol.ellipsePlotSymbol()
         plotSymbol.size = CGSizeMake(0.5, 0.5)
         plotSymbol.fill = CPTFill(color: CPTColor.blueColor())
         scatPlot.plotSymbol = plotSymbol
         
-//        // configure plot styles
-//        var plotLineStyle = scatPlot.dataLineStyle.mutableCopy() as CPTMutableLineStyle
-//        plotLineStyle.lineWidth = 0.5
-//        plotLineStyle.lineColor = CPTColor.blueColor()
-//        scatPlot.dataLineStyle = plotLineStyle
     }
         
     // configure axes
@@ -211,9 +219,9 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         var yLabels = NSMutableSet(capacity: 13)
         var yLocations = NSMutableSet(capacity: 13)
         
-        for i in 0...12 {
-            let label = CPTAxisLabel(text: "\(i*5)", textStyle: axisTextStyle)
-            let location = NSNumber(int: Int32(i) * 5)
+        for i in 0...7 {
+            let label = CPTAxisLabel(text: "\(Float(i) * 0.3)", textStyle: axisTextStyle)
+            let location = NSNumber(float: Float(i) * 0.3)
             label.tickLocation = location
             label.offset = CGFloat(-20)
             yLabels.addObject(label)

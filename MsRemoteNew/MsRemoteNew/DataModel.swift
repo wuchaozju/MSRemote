@@ -21,6 +21,7 @@ struct recordedData {
     let timePoint: Double
     let latitude: Double
     let longitude: Double
+    let accuracy: Double
     let groupOfDay: Int
 }
 
@@ -47,7 +48,6 @@ class DataModel {
             if let recordsNumForToday = dict[date] {
                 dateOfTodayStr = date
                 today0AM = formatter.dateFromString(date)!
-                
                 // query all existing data for today
                 return querySpeedTimepointData(recordsNumForToday, currentDay: date)
             }
@@ -55,7 +55,7 @@ class DataModel {
         return nil
     }
     
-    func saveData(time: NSDate, speed: Double, latitude: Double, longitude: Double) -> (Bool, NSTimeInterval) {
+    func saveData(time: NSDate, speed: Double, latitude: Double, longitude: Double, accuracy: Double) -> (Bool, NSTimeInterval) {
         
         let date = formatter.stringFromDate(time)        
         
@@ -78,7 +78,7 @@ class DataModel {
             
             let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
             
-            let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, latitude: latitude, longitude: longitude, groupOfDay: 0)
+            let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: 0)
             saveLocallyAndRemotely(newRecord)
 
             return (false, timeElapsed)
@@ -96,7 +96,7 @@ class DataModel {
         }
         
         let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
-        let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, latitude: latitude, longitude: longitude, groupOfDay: currentPoints / 1000)
+        let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: currentPoints / 1000)
         saveLocallyAndRemotely(newRecord)
         
         return (true, timeElapsed)
@@ -115,6 +115,7 @@ class DataModel {
         
         record["user"] = userID
         record["location"] = point
+        record["accuracy"] = newRecord.accuracy
         record["speed"] = newRecord.speed
         record["timePoint"] = newRecord.timePoint
         record["day"] = newRecord.dayOfDate
@@ -138,7 +139,12 @@ class DataModel {
         let groupsNum: Int = NumOfRecords / 1000
         for i in 0...groupsNum {
             let query = PFQuery(className: "UserLocation")
+
             query.fromLocalDatastore()
+            
+//            let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
+//            query.whereKey("user", equalTo: userID)
+            
             query.whereKey("day", equalTo: currentDay)
             query.whereKey("groupOfDay", equalTo: i)
             query.limit = 1000

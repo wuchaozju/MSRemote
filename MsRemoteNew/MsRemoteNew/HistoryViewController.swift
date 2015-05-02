@@ -9,6 +9,7 @@
 import UIKit
 
 class HistoryViewController: UIViewController, CPTPlotDataSource {
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var dataModel = DataModel()
     var graphView: CPTGraphHostingView!
@@ -20,15 +21,40 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        self.configureHost()
-        self.configureGraph()
-        self.configurePlot()
-        self.configureAxes()
         
-        (speedData, timeData) = dataModel.getHistoryTimeSpeedData(NumOfRecords, day: day)
-
+        // Do any additional setup after loading the view.
+        fetchData()
+    }
+    
+    private func fetchData() {
+        spinner?.startAnimating()
+        let qos = Int(QOS_CLASS_USER_INITIATED.value)
+        dispatch_async(dispatch_get_global_queue(qos, 0)) { () -> Void in
+            var speed = [Double]()
+            var time = [Double]()
+            (speed, time) = self.dataModel.getHistoryTimeSpeedData(self.NumOfRecords, day: self.day)
+            
+            if speed.count != 0 && speed.count == time.count {
+                var sortedData = [(Double, Double)]()
+                for i in 0...speed.count-1 {
+                    sortedData.append((time[i], speed[i]))
+                }
+                sortedData.sort {$0.0 < $1.0}
+                
+                for i in sortedData {
+                    self.timeData.append(i.0)
+                    self.speedData.append(i.1)
+                }
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.spinner?.stopAnimating()
+                self.configureHost()
+                self.configureGraph()
+                self.configurePlot()
+                self.configureAxes()
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,7 +106,7 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
         
         var plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.xRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 86400))
-        plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 60))
+        plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(float: 2.2))
     }
     
     // configure plot
@@ -90,18 +116,16 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
         scatPlot.dataSource = self
         self.graphView.hostedGraph.addPlot(scatPlot, toPlotSpace: self.graphView.hostedGraph.defaultPlotSpace)
         
-        scatPlot.dataLineStyle = nil
+        var lineStyle = CPTMutableLineStyle()
+        lineStyle.lineWidth = 1.0
+        lineStyle.lineColor = CPTColor.blueColor()
+        scatPlot.dataLineStyle = lineStyle
         
         var plotSymbol = CPTPlotSymbol.ellipsePlotSymbol()
         plotSymbol.size = CGSizeMake(0.5, 0.5)
         plotSymbol.fill = CPTFill(color: CPTColor.blueColor())
         scatPlot.plotSymbol = plotSymbol
-        
-        //        // configure plot styles
-        //        var plotLineStyle = scatPlot.dataLineStyle.mutableCopy() as CPTMutableLineStyle
-        //        plotLineStyle.lineWidth = 0.5
-        //        plotLineStyle.lineColor = CPTColor.blueColor()
-        //        scatPlot.dataLineStyle = plotLineStyle
+
     }
     
     // configure axes
@@ -164,9 +188,9 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
         var yLabels = NSMutableSet(capacity: 13)
         var yLocations = NSMutableSet(capacity: 13)
         
-        for i in 0...12 {
-            let label = CPTAxisLabel(text: "\(i*5)", textStyle: axisTextStyle)
-            let location = NSNumber(int: Int32(i) * 5)
+        for i in 0...7 {
+            let label = CPTAxisLabel(text: "\(Float(i) * 0.3)", textStyle: axisTextStyle)
+            let location = NSNumber(float: Float(i) * 0.3)
             label.tickLocation = location
             label.offset = CGFloat(-20)
             yLabels.addObject(label)

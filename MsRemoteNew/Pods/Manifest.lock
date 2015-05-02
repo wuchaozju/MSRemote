@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   CorePlot:
-    :commit: e3c3b8add96db3e78ff41df7690301d676227ed3
+    :commit: ac3c555bbf52b8c4f4f9734b4fb4ceb30e6550bd
     :git: https://github.com/core-plot/core-plot.git
 
 SPEC CHECKSUMS:
