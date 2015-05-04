@@ -99,7 +99,6 @@ class HistoryTableViewController: UITableViewController {
             // get date string of today
             let formatter = NSDateFormatter()
             formatter.dateFormat = "d/M/yyyy"
-            formatter.timeZone = NSTimeZone(name: "UCT")
             let date = formatter.stringFromDate(NSDate())
             // remove today from dict
             dict.removeValueForKey(date)
@@ -114,7 +113,7 @@ class HistoryTableViewController: UITableViewController {
     
     func dateFormatter(date: NSDate) -> String {
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "MMM dd, yyyy"
+        formatter.dateStyle = NSDateFormatterStyle.MediumStyle
         return formatter.stringFromDate(date)
     }
 

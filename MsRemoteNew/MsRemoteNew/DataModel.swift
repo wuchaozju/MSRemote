@@ -57,7 +57,7 @@ class DataModel {
     
     func saveData(time: NSDate, speed: Double, latitude: Double, longitude: Double, accuracy: Double) -> (Bool, NSTimeInterval) {
         
-        let date = formatter.stringFromDate(time)        
+        let date = formatter.stringFromDate(time)
         
         // new day begins
         if dateOfTodayStr != date {
