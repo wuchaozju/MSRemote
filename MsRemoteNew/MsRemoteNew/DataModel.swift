@@ -19,6 +19,7 @@ struct recordedData {
     let dayOfDate: String
     let speed: Double
     let timePoint: Double
+    let duration: Double
     let latitude: Double
     let longitude: Double
     let accuracy: Double
@@ -55,7 +56,7 @@ class DataModel {
         return nil
     }
     
-    func saveData(time: NSDate, speed: Double, latitude: Double, longitude: Double, accuracy: Double) -> (Bool, NSTimeInterval) {
+    func saveData(time: NSDate, speed: Double, duration: Double, latitude: Double, longitude: Double, accuracy: Double) -> (Bool, NSTimeInterval) {
         
         let date = formatter.stringFromDate(time)
         
@@ -78,7 +79,7 @@ class DataModel {
             
             let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
             
-            let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: 0)
+            let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, duration: duration, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: 0)
             saveLocallyAndRemotely(newRecord)
 
             return (false, timeElapsed)
@@ -96,7 +97,7 @@ class DataModel {
         }
         
         let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
-        let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: currentPoints / 1000)
+        let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, duration: duration, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: currentPoints / 1000)
         saveLocallyAndRemotely(newRecord)
         
         return (true, timeElapsed)
@@ -117,6 +118,7 @@ class DataModel {
         record["location"] = point
         record["accuracy"] = newRecord.accuracy
         record["speed"] = newRecord.speed
+        record["duration"] = newRecord.duration
         record["timePoint"] = newRecord.timePoint
         record["day"] = newRecord.dayOfDate
         record["groupOfDay"] = newRecord.groupOfDay

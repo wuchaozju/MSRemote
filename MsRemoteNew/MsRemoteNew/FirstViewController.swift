@@ -222,40 +222,40 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         var location:CLLocation = locations.last as! CLLocation
         // discard bad data
         let accuracyInMeter = location.horizontalAccuracy
-        if accuracyInMeter < 0 {
+        if accuracyInMeter != 10 {
             return
         }
-        
+
         locationArray.append(location)
                 
         // draw on map
         if (locationArray.count > 1){
-            // get location
+            // get latitude and longitude
             let latitude = (location.coordinate.latitude.description as NSString).doubleValue
             let longitude = (location.coordinate.longitude.description as NSString).doubleValue
             
-            // get speed
-            let sourceIndex = locationArray.count - 2
-            let destinationIndex = locationArray.count - 1
+            // get previous location
+            let preLoc = locationArray[locationArray.count - 2]
             
-            let c1 = locationArray[sourceIndex].coordinate
-            let c2 = locationArray[destinationIndex].coordinate
+            let c1 = preLoc.coordinate
+            let c2 = location.coordinate
             var a = [c1, c2]
             
             let polyline = MKPolyline(coordinates: &a, count: a.count)
-            let speed: Double = calculateSpeed(locationArray[sourceIndex], destination: locationArray[destinationIndex])
+            let speed: Double = calculateSpeed(preLoc, destination: location)
             
             // get time
-            let currentTime = NSDate()
+            let timeDifference = location.timestamp.timeIntervalSinceDate(preLoc.timestamp)
+            let averagedTimePointForSpeed = NSDate(timeInterval: timeDifference / 2, sinceDate: preLoc.timestamp)
             
             // save data
             if dataModel == nil {
                 dataModel = DataModel()
-                if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(currentTime) {
+                if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(averagedTimePointForSpeed) {
                     chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
                 }
             }
-            let (oldday, timeSec) = dataModel.saveData(currentTime, speed: speed, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter)
+            let (oldday, timeSec) = dataModel.saveData(averagedTimePointForSpeed, speed: speed, duration: timeDifference, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter)
             if oldday == false { // new day
                 
                 // remove tracks
@@ -275,7 +275,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             }
             overlayArray.append(polyline)
             map.addOverlay(polyline)
-
+        
         }
         
     }
