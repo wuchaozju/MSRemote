@@ -19,8 +19,17 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
     var formattedDate: String!
     var NumOfRecords: Int!
     
+    private let timeIntervalToShowData: Int = 15
+    
+    var compressSpeedWithFixedTimePoint: [[Double]?]!
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // configure plot parameters
+        let slotNum = 60 * 24 / timeIntervalToShowData
+        compressSpeedWithFixedTimePoint = [[Double]?](count: slotNum, repeatedValue: nil)
         
         // Do any additional setup after loading the view.
         fetchData()
@@ -34,18 +43,17 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
             var time = [Double]()
             (speed, time) = self.dataModel.getHistoryTimeSpeedData(self.NumOfRecords, day: self.day)
             
-            if speed.count != 0 && speed.count == time.count {
-                var sortedData = [(Double, Double)]()
+            if speed.count != 0 && time.count == speed.count {
                 for i in 0...speed.count-1 {
-                    sortedData.append((time[i], speed[i]))
-                }
-                sortedData.sort {$0.0 < $1.0}
-                
-                for i in sortedData {
-                    self.timeData.append(i.0)
-                    self.speedData.append(i.1)
+                    let index = Int(time[i] / Double(self.timeIntervalToShowData * 60))
+                    if self.compressSpeedWithFixedTimePoint[index] == nil {
+                        self.compressSpeedWithFixedTimePoint[index] = [Double]()
+                    }
+                    self.compressSpeedWithFixedTimePoint[index]!.append(speed[i])
                 }
             }
+            
+            self.generatePlotData()
             
             dispatch_async(dispatch_get_main_queue()) {
                 self.spinner?.stopAnimating()
@@ -56,6 +64,27 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
             }
         }
     }
+    
+    private func generatePlotData() {
+        for i in 0..<compressSpeedWithFixedTimePoint.count {
+            if let speedArray = compressSpeedWithFixedTimePoint[i] {
+                let averageSpeed = averageOf(speedArray)
+                speedData.append(averageSpeed)
+                let supposedTimePoint: Double = (Double(i) + 0.5) * Double(timeIntervalToShowData * 60)
+                timeData.append(supposedTimePoint)
+            }
+        }
+    }
+    
+    private func averageOf(data: [Double]) -> Double {
+        if data.count == 0 { return 0 }
+        var sum: Double = 0
+        for i in data {
+            sum += i
+        }
+        return sum / Double(data.count)
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -117,15 +146,16 @@ class HistoryViewController: UIViewController, CPTPlotDataSource {
         self.graphView.hostedGraph.addPlot(scatPlot, toPlotSpace: self.graphView.hostedGraph.defaultPlotSpace)
         
         var lineStyle = CPTMutableLineStyle()
-        lineStyle.lineWidth = 1.0
-        lineStyle.lineColor = CPTColor.blueColor()
+        lineStyle.lineWidth = 0.5
+        let lineColor = CPTColor.blueColor()
+        lineStyle.lineColor = lineColor.colorWithAlphaComponent(0.5)
+
         scatPlot.dataLineStyle = lineStyle
         
         var plotSymbol = CPTPlotSymbol.ellipsePlotSymbol()
-        plotSymbol.size = CGSizeMake(0.5, 0.5)
-        plotSymbol.fill = CPTFill(color: CPTColor.blueColor())
+        plotSymbol.fill = nil
+        plotSymbol.size = CGSizeMake(1.5, 1.5)
         scatPlot.plotSymbol = plotSymbol
-
     }
     
     // configure axes

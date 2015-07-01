@@ -33,6 +33,17 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var legendView: UIView!
+    var updatedPotisionNum = 0
+    
+    @IBAction func toggleFilter(sender: UIBarButtonItem) {
+        if sender.title == "Filtered" {
+            self.slsLocationManager.distanceFilter = kCLDistanceFilterNone
+            sender.title = "No Filter"
+        } else {
+            self.slsLocationManager.distanceFilter = 5
+            sender.title = "Filtered"
+        }
+    }
     
     @IBAction func currentLoc(sender: AnyObject) {
         let spanX = 0.007
@@ -62,7 +73,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             
             //start Standard Location Service to track user's location in foreground
             
-            self.startSLSToMonitorLocationWithSLSByDistanceFilter(10)
+            self.startSLSToMonitorLocationWithSLSByDistanceFilter(5)
             
         }else{
             
@@ -126,7 +137,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     //set the desiredAccuracy. this property only work in Stardard Location Service
                     
                     // best accuracy for debug
-//                     self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyBest
                     self.slsLocationManager.desiredAccuracy = kCLLocationAccuracyBest
                     
                 }else{
@@ -144,7 +154,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 // set a movement threshold for new events. this property only work in Stardard Location Service
                 
                 self.slsLocationManager.distanceFilter = Double(thresholdDistance) // meters
-                
 
                 //set automatically pause to NO (default is YES)
                 
@@ -220,11 +229,19 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!){
         var location:CLLocation = locations.last as! CLLocation
+        
+        // for testing
+        ++updatedPotisionNum
+        if updatedPotisionNum >= 1000 {
+            updatedPotisionNum = 0
+        }
+        self.navigationItem.title = "\(location.horizontalAccuracy)" + " " + "\(updatedPotisionNum)"
+        
         // discard bad data
         let accuracyInMeter = location.horizontalAccuracy
-        if accuracyInMeter != 10 {
-            return
-        }
+//        if accuracyInMeter <= 0 || accuracyInMeter > 10 {
+//            return
+//        }
 
         locationArray.append(location)
                 
@@ -242,33 +259,38 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var a = [c1, c2]
             
             let polyline = MKPolyline(coordinates: &a, count: a.count)
-            let speed: Double = calculateSpeed(preLoc, destination: location)
+            var speed: Double = calculateSpeed(preLoc, destination: location)
             
-            // get time
-            let timeDifference = location.timestamp.timeIntervalSinceDate(preLoc.timestamp)
-            let averagedTimePointForSpeed = NSDate(timeInterval: timeDifference / 2, sinceDate: preLoc.timestamp)
-            
-            // save data
-            if dataModel == nil {
-                dataModel = DataModel()
-                if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(averagedTimePointForSpeed) {
-                    chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
+            // for walking speed
+//            if speed > 0 && speed <= 2 {
+                // get time
+                let timeDifference = location.timestamp.timeIntervalSinceDate(preLoc.timestamp)
+                let averagedTimePointForSpeed = NSDate(timeInterval: timeDifference / 2, sinceDate: preLoc.timestamp)
+                let timeStampForLoc = location.timestamp
+                
+                // save data
+                if dataModel == nil {
+                    dataModel = DataModel()
+                    if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(averagedTimePointForSpeed) {
+                        chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
+                    }
                 }
-            }
-            let (oldday, timeSec) = dataModel.saveData(averagedTimePointForSpeed, speed: speed, duration: timeDifference, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter)
-            if oldday == false { // new day
-                
-                // remove tracks
-                map.removeOverlays(overlayArray)
-                overlayArray.removeAll(keepCapacity: false)
-                
-                // notify core plot Chart VC
-                chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed, time: timeSec)
-                
-            } else {
-                // notify core plot Chart VC
-                chartDelegate?.updateChart(speed, time: timeSec)
-            }
+                let (oldday, timeSec) = dataModel.saveData(averagedTimePointForSpeed, speed: speed, duration: timeDifference, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter, locTimestamp: timeStampForLoc)
+                if oldday == false { // new day
+                    
+                    // remove tracks
+                    map.removeOverlays(overlayArray)
+                    overlayArray.removeAll(keepCapacity: false)
+                    
+                    // notify core plot Chart VC
+                    chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed, time: timeSec)
+                    
+                } else {
+                    // notify core plot Chart VC
+                    chartDelegate?.updateChart(speed, time: timeSec)
+                }
+
+//            }
             
             sync(Poly_Speed) {
                 self.Poly_Speed[polyline] = speed
@@ -284,7 +306,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func calculateSpeed(source: CLLocation, destination: CLLocation) -> Double {
         var distance = source.distanceFromLocation(destination)
         var speed = distance / (destination.timestamp.timeIntervalSinceDate(source.timestamp))
-        return min(max(speed, 0), 2)
+        return speed
     }
     
     // find colors for different speeds

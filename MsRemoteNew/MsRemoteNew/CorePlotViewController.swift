@@ -17,6 +17,9 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     var graphView: CPTGraphHostingView!
     var timeData = [Double]()
     var speedData = [Double]()
+    private let timeIntervalToShowData: Int = 15
+
+    var compressSpeedWithFixedTimePoint: [[Double]?]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +34,10 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         let FirstVC = NaviVC.topViewController as! FirstViewController
         FirstVC.chartDelegate = self
         FirstVC.LaunchLocationUpdate()
+        
+        // configure plot parameters
+        let slotNum = 60 * 24 / timeIntervalToShowData
+        compressSpeedWithFixedTimePoint = [[Double]?](count: slotNum, repeatedValue: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,9 +64,19 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     
     // delegate methods for retrieving data
     func updateChart(speed: Double, time: NSTimeInterval) {
-        speedData.append(speed)
-        timeData.append(time)
-
+        let index = Int(time / Double(timeIntervalToShowData * 60))
+        if compressSpeedWithFixedTimePoint[index] == nil {
+            compressSpeedWithFixedTimePoint[index] = [Double]()
+            compressSpeedWithFixedTimePoint[index]!.append(speed)
+            
+            speedData.append(speed)
+            let supposedTimePoint: Double = (Double(index) + 0.5) * Double(timeIntervalToShowData * 60)
+            timeData.append(supposedTimePoint)
+        } else {
+            compressSpeedWithFixedTimePoint[index]!.append(speed)
+            speedData[speedData.count - 1] = averageOf(compressSpeedWithFixedTimePoint[index]!)
+        }
+        
         // reload data for only newly-added point
         self.graphView.hostedGraph.plotAtIndex(0).reloadDataInIndexRange(NSMakeRange(speedData.count - 1, 1))
     }
@@ -67,29 +84,47 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     func updateChart(newDate: String, speed: Double, time: NSTimeInterval) {
         speedData.removeAll(keepCapacity: false)
         timeData.removeAll(keepCapacity: false)
-        
-        timeData.append(time)
-        speedData.append(speed)
-        
-        self.graphView.hostedGraph.plotAtIndex(0).reloadData()
+        // configure plot parameters
+        let slotNum = 60 * 24 / timeIntervalToShowData
+        compressSpeedWithFixedTimePoint = [[Double]?](count: slotNum, repeatedValue: nil)
+        updateChart(speed, time: time)
     }
     
     func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double]) {
-        var sortedData = [(Double, Double)]()
+        
         if speedArray.count != 0 && timeArray.count == speedArray.count {
             for i in 0...speedArray.count-1 {
-                sortedData.append((timeArray[i], speedArray[i]))
-            }
-            sortedData.sort {$0.0 < $1.0}
-            
-            for i in sortedData {
-                timeData.append(i.0)
-                speedData.append(i.1)
+                let index = Int(timeArray[i] / Double(timeIntervalToShowData * 60))
+                if compressSpeedWithFixedTimePoint[index] == nil {
+                    compressSpeedWithFixedTimePoint[index] = [Double]()
+                }
+                compressSpeedWithFixedTimePoint[index]!.append(speedArray[i])
             }
         }
+        
+        generatePlotData()
         self.graphView.hostedGraph.plotAtIndex(0).reloadData()
     }
     
+    private func generatePlotData() {
+        for i in 0..<compressSpeedWithFixedTimePoint.count {
+            if let speedArray = compressSpeedWithFixedTimePoint[i] {
+                let averageSpeed = averageOf(speedArray)
+                speedData.append(averageSpeed)
+                let supposedTimePoint: Double = (Double(i) + 0.5) * Double(timeIntervalToShowData * 60)
+                timeData.append(supposedTimePoint)
+            }
+        }
+    }
+    
+    private func averageOf(data: [Double]) -> Double {
+        if data.count == 0 { return 0 }
+        var sum: Double = 0
+        for i in data {
+            sum += i
+        }
+        return sum / Double(data.count)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let identifier = segue.identifier {
@@ -148,17 +183,18 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         self.graphView.hostedGraph.addPlot(scatPlot, toPlotSpace: self.graphView.hostedGraph.defaultPlotSpace)
         
         var lineStyle = CPTMutableLineStyle()
-        lineStyle.lineWidth = 1.0
-        lineStyle.lineColor = CPTColor.blueColor()
+        lineStyle.lineWidth = 0.5
+        let lineColor = CPTColor.blueColor()
+        lineStyle.lineColor = lineColor.colorWithAlphaComponent(0.5)
+        
         scatPlot.dataLineStyle = lineStyle
         
         var plotSymbol = CPTPlotSymbol.ellipsePlotSymbol()
-        plotSymbol.size = CGSizeMake(0.5, 0.5)
-        plotSymbol.fill = CPTFill(color: CPTColor.blueColor())
+        plotSymbol.fill = nil
+        plotSymbol.size = CGSizeMake(1.5, 1.5)
         scatPlot.plotSymbol = plotSymbol
-        
     }
-        
+    
     // configure axes
     func configureAxes() {
         var axisSet = self.graphView.hostedGraph.axisSet as! CPTXYAxisSet
