@@ -33,6 +33,11 @@ class DataModel {
     var dateOfTodayStr: String = ""
     var today0AM: NSDate!
     
+    private var unuploadedData = Set<PFObject>()
+    func getUnunloadedDataNum() -> Int {
+        return unuploadedData.count
+    }
+    
     init() {
         formatter.dateFormat = "d/M/yyyy"
     }
@@ -45,7 +50,6 @@ class DataModel {
     func getExistingRecordsForToday(currentTime: NSDate) -> ([Double], [Double])? {
         
         let date = formatter.stringFromDate(currentTime)
-        
         if let dict = NSUserDefaults.standardUserDefaults().dictionaryForKey("MSRecord") as? [String: Int] {
             if let recordsNumForToday = dict[date] {
                 dateOfTodayStr = date
@@ -94,6 +98,7 @@ class DataModel {
                 dict[date] = numberOfRecords
                 currentPoints = numberOfRecords
                 NSUserDefaults.standardUserDefaults().setObject(dict, forKey: "MSRecord")
+                println("numberofRecords: \(currentPoints)")
             }
         }
         
@@ -128,11 +133,15 @@ class DataModel {
         record.pinInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
 
         }
-
-        record.saveEventually { (result:Bool, error:NSError!) -> Void in
-            
+        
+        record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+            if !result {
+                println("error happened when uploading data: \(error.description)")
+                self.unuploadedData.insert(record)
+            } else {
+                println("upload successfully")
+            }
         }
-
     }
     
     func querySpeedTimepointData(NumOfRecords: Int, currentDay: String) -> ([Double], [Double]){
@@ -141,6 +150,7 @@ class DataModel {
         var speedArray = [Double]()
         
         let groupsNum: Int = NumOfRecords / 1000
+
         for i in 0...groupsNum {
             let query = PFQuery(className: "UserLocation")
 
@@ -160,6 +170,19 @@ class DataModel {
             }
         }
         return (speedArray, timeArray)
+    }
+    
+    private func reupload() {
+        for record in unuploadedData {
+            record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+                if !result {
+                    println("error happened when uploading data: \(error.description)")
+                } else {
+                    self.unuploadedData.remove(record)
+                }
+            }
+
+        }
     }
 
 }

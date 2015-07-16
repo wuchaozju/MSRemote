@@ -235,13 +235,15 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         if updatedPotisionNum >= 1000 {
             updatedPotisionNum = 0
         }
-        self.navigationItem.title = "\(location.horizontalAccuracy)" + " " + "\(updatedPotisionNum)"
+        
+        var titleString = "\(location.horizontalAccuracy)" + " " + "\(updatedPotisionNum)"
+        if dataModel != nil {
+            titleString += " <\(dataModel.getUnunloadedDataNum())>"
+        }
+        self.navigationItem.title = titleString
         
         // discard bad data
         let accuracyInMeter = location.horizontalAccuracy
-//        if accuracyInMeter <= 0 || accuracyInMeter > 10 {
-//            return
-//        }
 
         locationArray.append(location)
                 
@@ -267,7 +269,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 let timeDifference = location.timestamp.timeIntervalSinceDate(preLoc.timestamp)
                 let averagedTimePointForSpeed = NSDate(timeInterval: timeDifference / 2, sinceDate: preLoc.timestamp)
                 let timeStampForLoc = location.timestamp
-                
+            
                 // save data
                 if dataModel == nil {
                     dataModel = DataModel()
@@ -289,9 +291,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     // notify core plot Chart VC
                     chartDelegate?.updateChart(speed, time: timeSec)
                 }
-
-//            }
-            
+        
             sync(Poly_Speed) {
                 self.Poly_Speed[polyline] = speed
             }

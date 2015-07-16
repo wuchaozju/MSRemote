@@ -2,4 +2,3 @@
 # platform :ios, '6.0'
 
 pod 'CorePlot', :git => 'https://github.com/core-plot/core-plot.git', :branch => 'release-2.0'
-
