@@ -15,9 +15,22 @@ protocol UpdateChartDelegate {
     func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double])
 }
 
+protocol DataCollectionDelegate {
+    func collectData(latitude: Double, longitude: Double, accuracy: Double, locTimestamp: NSDate)
+    func collectAccuracyData(accuracy: Double)
+}
+
 class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
 
+    let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
+
+    
     var chartDelegate: UpdateChartDelegate?
+    var dataCollectionDelegate: DataCollectionDelegate?
+    
+    // if data is transfered to data collection part
+    var dataCollectionOn: Bool = false
+    var accuracyCollectionOn: Bool = false
     
     let slsLocationManager = CLLocationManager()
     var dataModel: DataModel!
@@ -40,7 +53,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             self.slsLocationManager.distanceFilter = kCLDistanceFilterNone
             sender.title = "No Filter"
         } else {
-            self.slsLocationManager.distanceFilter = 5
+            self.slsLocationManager.distanceFilter = 10
             sender.title = "Filtered"
         }
     }
@@ -73,7 +86,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             
             //start Standard Location Service to track user's location in foreground
             
-            self.startSLSToMonitorLocationWithSLSByDistanceFilter(5)
+            self.startSLSToMonitorLocationWithSLSByDistanceFilter(10)
             
         }else{
             
@@ -238,7 +251,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         var titleString = "\(location.horizontalAccuracy)" + " " + "\(updatedPotisionNum)"
         if dataModel != nil {
-            titleString += " <\(dataModel.getUnunloadedDataNum())>"
+            titleString += ""
         }
         self.navigationItem.title = titleString
         
@@ -291,7 +304,16 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                     // notify core plot Chart VC
                     chartDelegate?.updateChart(speed, time: timeSec)
                 }
-        
+            
+            if self.dataCollectionOn == true {
+                dataCollectionDelegate?.collectData(latitude, longitude: longitude, accuracy: accuracyInMeter, locTimestamp: timeStampForLoc)
+            }
+            
+            if self.accuracyCollectionOn == true {
+                dataCollectionDelegate?.collectAccuracyData(accuracyInMeter)
+            }
+
+            
             sync(Poly_Speed) {
                 self.Poly_Speed[polyline] = speed
             }
@@ -300,6 +322,18 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         }
         
+    }
+    
+    func allowDataForCollection(state: Bool) {
+        sync(dataCollectionOn) {
+            self.dataCollectionOn = state
+        }
+    }
+    
+    func allowAccuracyForCollection(state: Bool) {
+        sync(accuracyCollectionOn) {
+            self.accuracyCollectionOn = state
+        }
     }
     
     // calculate speed between two locations

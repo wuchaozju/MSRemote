@@ -28,16 +28,11 @@ struct recordedData {
 }
 
 class DataModel {
-
+    
     private let formatter = NSDateFormatter()
     var dateOfTodayStr: String = ""
     var today0AM: NSDate!
-    
-    private var unuploadedData = Set<PFObject>()
-    func getUnunloadedDataNum() -> Int {
-        return unuploadedData.count
-    }
-    
+        
     init() {
         formatter.dateFormat = "d/M/yyyy"
     }
@@ -85,7 +80,7 @@ class DataModel {
             let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
             
             let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, duration: duration, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: 0, locTimestamp: locTimestamp)
-            saveLocallyAndRemotely(newRecord)
+            saveLocally(newRecord)
 
             return (false, timeElapsed)
         }
@@ -98,13 +93,12 @@ class DataModel {
                 dict[date] = numberOfRecords
                 currentPoints = numberOfRecords
                 NSUserDefaults.standardUserDefaults().setObject(dict, forKey: "MSRecord")
-                println("numberofRecords: \(currentPoints)")
             }
         }
         
         let timeElapsed = NSDate().timeIntervalSinceDate(today0AM)
         let newRecord = recordedData(dayOfDate: date, speed: speed, timePoint: timeElapsed, duration: duration, latitude: latitude, longitude: longitude, accuracy: accuracy, groupOfDay: currentPoints / 1000, locTimestamp: locTimestamp)
-        saveLocallyAndRemotely(newRecord)
+        saveLocally(newRecord)
         
         return (true, timeElapsed)
     }
@@ -137,10 +131,35 @@ class DataModel {
         record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
             if !result {
                 println("error happened when uploading data: \(error.description)")
-                self.unuploadedData.insert(record)
             } else {
                 println("upload successfully")
             }
+        }
+    }
+    
+    private func saveLocally(newRecord: recordedData) {
+        
+        // save all data locally and remotely
+        let point = PFGeoPoint(latitude:newRecord.latitude, longitude:newRecord.longitude)
+        
+        var record = PFObject(className: "UserLocation")
+        
+        // for stored user ID
+        // use name of current device if no valid user ID is found
+        let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
+        
+        record["user"] = userID
+        record["location"] = point
+        record["accuracy"] = newRecord.accuracy
+        record["speed"] = newRecord.speed
+        record["duration"] = newRecord.duration
+        record["timePoint"] = newRecord.timePoint
+        record["day"] = newRecord.dayOfDate
+        record["groupOfDay"] = newRecord.groupOfDay
+        record["locTimestamp"] = newRecord.locTimestamp
+        
+        record.pinInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+            
         }
     }
     
@@ -172,17 +191,5 @@ class DataModel {
         return (speedArray, timeArray)
     }
     
-    private func reupload() {
-        for record in unuploadedData {
-            record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
-                if !result {
-                    println("error happened when uploading data: \(error.description)")
-                } else {
-                    self.unuploadedData.remove(record)
-                }
-            }
-
-        }
-    }
-
+    
 }
