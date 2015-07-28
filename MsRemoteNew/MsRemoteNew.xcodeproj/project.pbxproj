@@ -13,7 +13,6 @@
 		3B3AD38A1AC834AE000454CF /* CorePlotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3AD3891AC834AE000454CF /* CorePlotViewController.swift */; };
 		3B3AD38C1AC8814B000454CF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B3AD38B1AC8814B000454CF /* Social.framework */; };
 		3B3AD3901AC881D9000454CF /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B3AD38F1AC881D9000454CF /* Accounts.framework */; };
-		3B4072611B6284BE002996B8 /* DataCollectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4072601B6284BE002996B8 /* DataCollectionModel.swift */; };
 		3B62B7161B5D253200001395 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B62B7151B5D253200001395 /* Images.xcassets */; };
 		3BAC57BF1AD0295B00774367 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC57BE1AD0295B00774367 /* HistoryTableViewController.swift */; };
 		3BC66AED1AC4F8470013C381 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC66AEC1AC4F8470013C381 /* DataModel.swift */; };
@@ -56,7 +55,6 @@
 		3B3AD38B1AC8814B000454CF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		3B3AD38D1AC88159000454CF /* libPods-CorePlot.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-CorePlot.a"; path = "Pods/../build/Debug-iphoneos/libPods-CorePlot.a"; sourceTree = "<group>"; };
 		3B3AD38F1AC881D9000454CF /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
-		3B4072601B6284BE002996B8 /* DataCollectionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCollectionModel.swift; sourceTree = "<group>"; };
 		3B62B7151B5D253200001395 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3BAC57BE1AD0295B00774367 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		3BC66AEC1AC4F8470013C381 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
@@ -171,7 +169,6 @@
 				3B3AD3891AC834AE000454CF /* CorePlotViewController.swift */,
 				3BAC57BE1AD0295B00774367 /* HistoryTableViewController.swift */,
 				3B01D3FD1AD0C42500B7EDA6 /* HistoryViewController.swift */,
-				3B4072601B6284BE002996B8 /* DataCollectionModel.swift */,
 				3B2FB2981B625205003CC411 /* DataCollectionViewController.swift */,
 				E5BA8F321AA750A900F6B097 /* Main.storyboard */,
 				E5BA8F371AA750A900F6B097 /* LaunchScreen.xib */,
@@ -376,7 +373,6 @@
 				3B3AD38A1AC834AE000454CF /* CorePlotViewController.swift in Sources */,
 				3BAC57BF1AD0295B00774367 /* HistoryTableViewController.swift in Sources */,
 				3BC66AED1AC4F8470013C381 /* DataModel.swift in Sources */,
-				3B4072611B6284BE002996B8 /* DataCollectionModel.swift in Sources */,
 				E5BA8F2F1AA750A900F6B097 /* FirstViewController.swift in Sources */,
 				3B342E061AC4D9D300B6091C /* SettingsTableViewController.swift in Sources */,
 			);

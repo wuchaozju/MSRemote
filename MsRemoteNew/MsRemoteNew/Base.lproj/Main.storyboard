@@ -521,9 +521,26 @@
                                     <action selector="startDataCollection:" destination="q6j-dB-f1A" eventType="touchUpInside" id="f6d-vQ-Arh"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="zi3-Bh-m17" userLabel="StopDataCollection">
+                                <rect key="frame" x="225" y="250" width="150" height="60"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="CRQ-yh-hU1"/>
+                                    <constraint firstAttribute="height" constant="60" id="afi-QC-iZU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <state key="normal" title="Stop">
+                                    <color key="titleColor" red="0.94117647059999998" green="0.97254901959999995" blue="1" alpha="1" colorSpace="deviceRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stopDataCollection:" destination="q6j-dB-f1A" eventType="touchUpInside" id="SCV-cJ-y2e"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="zi3-Bh-m17" secondAttribute="trailing" constant="209" id="2hL-wT-59x"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="leading" secondItem="LUB-j2-Jlm" secondAttribute="leadingMargin" id="7dq-7h-7jR"/>
                             <constraint firstAttribute="centerY" secondItem="0uh-Ty-c5t" secondAttribute="centerY" constant="20" id="BMs-xf-0XW"/>
                             <constraint firstAttribute="centerY" secondItem="4Qw-Ka-YCk" secondAttribute="centerY" constant="20" id="BN0-DT-0PQ"/>
@@ -532,16 +549,19 @@
                             <constraint firstItem="RvP-D6-co4" firstAttribute="top" secondItem="Kol-JL-jLH" secondAttribute="bottom" constant="40" id="FzW-0H-ELK"/>
                             <constraint firstItem="Vu4-eV-tfj" firstAttribute="top" secondItem="RvP-D6-co4" secondAttribute="bottom" constant="30" id="GnW-L8-JIX"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="top" secondItem="Kol-JL-jLH" secondAttribute="bottom" constant="40" id="Gr4-Nu-ELi"/>
+                            <constraint firstAttribute="centerX" secondItem="zi3-Bh-m17" secondAttribute="centerX" id="ILb-XW-kxq"/>
                             <constraint firstAttribute="centerY" secondItem="aPa-eW-Xy1" secondAttribute="centerY" constant="20" id="Jdh-ib-SLt"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="height" secondItem="Vu4-eV-tfj" secondAttribute="height" id="Os5-KJ-BrR"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="trailing" secondItem="LUB-j2-Jlm" secondAttribute="trailingMargin" id="Pz8-hy-VTt"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="width" secondItem="Vu4-eV-tfj" secondAttribute="width" id="YXG-6N-wep"/>
+                            <constraint firstItem="zi3-Bh-m17" firstAttribute="top" secondItem="Kol-JL-jLH" secondAttribute="bottom" constant="230" id="c65-T0-Cqw"/>
                             <constraint firstAttribute="centerX" secondItem="RvP-D6-co4" secondAttribute="centerX" constant="-0.5" id="d11-cd-zFd"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="top" secondItem="Kol-JL-jLH" secondAttribute="bottom" constant="50" id="d4o-YD-vaH"/>
                             <constraint firstAttribute="centerX" secondItem="0uh-Ty-c5t" secondAttribute="centerX" id="h85-2D-Sid"/>
                             <constraint firstItem="Vu4-eV-tfj" firstAttribute="top" secondItem="RvP-D6-co4" secondAttribute="bottom" constant="40" id="hTj-Io-bO0"/>
                             <constraint firstItem="RvP-D6-co4" firstAttribute="top" secondItem="Kol-JL-jLH" secondAttribute="bottom" constant="40" id="i9R-Oh-919"/>
                             <constraint firstAttribute="centerX" secondItem="aPa-eW-Xy1" secondAttribute="centerX" id="oAQ-Ku-vT1"/>
+                            <constraint firstAttribute="centerY" secondItem="zi3-Bh-m17" secondAttribute="centerY" constant="20" id="ocB-Cb-lAe"/>
                             <constraint firstAttribute="centerX" secondItem="Vu4-eV-tfj" secondAttribute="centerX" id="tTe-GN-8aE"/>
                             <constraint firstAttribute="centerX" secondItem="Vu4-eV-tfj" secondAttribute="centerX" id="yRJ-MC-InF"/>
                         </constraints>
@@ -554,6 +574,8 @@
                                 <exclude reference="GnW-L8-JIX"/>
                                 <exclude reference="yRJ-MC-InF"/>
                                 <exclude reference="EFx-xy-Nkb"/>
+                                <exclude reference="2hL-wT-59x"/>
+                                <exclude reference="c65-T0-Cqw"/>
                             </mask>
                         </variation>
                     </view>
@@ -563,6 +585,7 @@
                         <outlet property="promptsLabel" destination="RvP-D6-co4" id="wce-dh-fsu"/>
                         <outlet property="startButtonOutlet" destination="0uh-Ty-c5t" id="515-bT-4XZ"/>
                         <outlet property="startDataCollectionOutlet" destination="aPa-eW-Xy1" id="7lj-du-Jt8"/>
+                        <outlet property="stopDataCollectionOutlet" destination="zi3-Bh-m17" id="EtQ-6u-MjE"/>
                         <outlet property="timeProgress" destination="Vu4-eV-tfj" id="BhI-eB-sfp"/>
                     </connections>
                 </viewController>
