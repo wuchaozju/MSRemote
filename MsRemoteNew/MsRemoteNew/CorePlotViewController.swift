@@ -33,7 +33,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         let NaviVC = self.tabBarController!.viewControllers![0] as! UINavigationController
         let FirstVC = NaviVC.topViewController as! FirstViewController
         FirstVC.chartDelegate = self
-        FirstVC.LaunchLocationUpdate()
+        FirstVC.launchLocationUpdate()
         
         // configure plot parameters
         let slotNum = 60 * 24 / timeIntervalToShowData

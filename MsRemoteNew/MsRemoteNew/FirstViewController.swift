@@ -66,7 +66,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         map.setRegion(newRegion, animated: true)
     }
     
-    func LaunchLocationUpdate(){
+    func launchLocationUpdate(){
         
         self.startSLSorRegionMonitoringLocation(true)
         
@@ -220,7 +220,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     }
     
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        LaunchLocationUpdate()
+        launchLocationUpdate()
     }
     
     func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
@@ -286,9 +286,9 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
                 // save data
                 if dataModel == nil {
                     dataModel = DataModel()
-                    if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(averagedTimePointForSpeed) {
-                        chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
-                    }
+//                    if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(averagedTimePointForSpeed) {
+//                        chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
+//                    }
                 }
                 let (oldday, timeSec) = dataModel.saveData(averagedTimePointForSpeed, speed: speed, duration: timeDifference, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter, locTimestamp: timeStampForLoc)
                 if oldday == false { // new day
@@ -420,7 +420,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         slsLocationManager.delegate = self
         tabBarController?.selectedIndex = 1
         
-        LaunchLocationUpdate()
+        launchLocationUpdate()
     }
     
     // prompt for user ID when first launched
