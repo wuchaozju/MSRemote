@@ -48,16 +48,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     @IBOutlet weak var legendView: UIView!
     var updatedPotisionNum = 0
     
-    @IBAction func toggleFilter(sender: UIBarButtonItem) {
-        if sender.title == "Filtered" {
-            self.slsLocationManager.distanceFilter = kCLDistanceFilterNone
-            sender.title = "No Filter"
-        } else {
-            self.slsLocationManager.distanceFilter = 10
-            sender.title = "Filtered"
-        }
-    }
-    
     @IBAction func currentLoc(sender: AnyObject) {
         let spanX = 0.007
         let spanY = 0.007
@@ -243,18 +233,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!){
         var location:CLLocation = locations.last as! CLLocation
         
-        // for testing
-        ++updatedPotisionNum
-        if updatedPotisionNum >= 1000 {
-            updatedPotisionNum = 0
-        }
-        
-        var titleString = "\(location.horizontalAccuracy)" + " " + "\(updatedPotisionNum)"
-        if dataModel != nil {
-            titleString += ""
-        }
-        self.navigationItem.title = titleString
-        
         // discard bad data
         let accuracyInMeter = location.horizontalAccuracy
 
@@ -407,22 +385,6 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         }
     }
     
-    func basicSetup() {
-        
-        // setup map view
-        map.delegate = self
-        map.mapType = MKMapType.Standard
-        
-        // setup legend view
-        legendView.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
-        view.addSubview(legendView)
-        
-        slsLocationManager.delegate = self
-        tabBarController?.selectedIndex = 1
-        
-        launchLocationUpdate()
-    }
-    
     // prompt for user ID when first launched
     func userIDInput() {
         let alertController = UIAlertController(title: "User ID", message: "Please input your User ID", preferredStyle: .Alert)
@@ -451,6 +413,24 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         }
         
     }
+    
+    func basicSetup() {
+        
+        // setup map view
+        map.delegate = self
+        map.mapType = MKMapType.Standard
+        
+        // setup legend view
+        legendView.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
+        view.addSubview(legendView)
+        
+        slsLocationManager.delegate = self
+        tabBarController?.selectedIndex = 1
+        
+        launchLocationUpdate()
+    }
+    
+
     
     // close the keyboard when pressing return
     func textFieldShouldReturn(textField: UITextField) -> Bool {

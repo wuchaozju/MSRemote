@@ -10,18 +10,29 @@ import UIKit
 import AudioToolbox
 
 class DataCollectionViewController: UIViewController, DataCollectionDelegate {
+    // Debugging label
+    @IBOutlet weak var collectedDataLabel: UILabel!
+    @IBOutlet weak var uploadedDataLabel: UILabel!
+    @IBOutlet weak var accuracyDataLabel: UILabel!
+    @IBOutlet weak var averageAccuracyLabel: UILabel!
+    @IBOutlet weak var uploadedStatusLabel: UILabel!
+    @IBOutlet weak var passedTimeLabel: UILabel!
+    //debug timer
+    private var timerForDebugging: NSTimer!
+    private var passedTime: Int = 0
     
     private struct Constants {
         static let COUNT_OF_POINTS = 8
         static let ACCURACY_THREHOLD: Double = 10
         static let AVERAGE_ACCURACY_THREHOLD: Double = 15
-        static let UPLOADED_PERCENTAGE: Double = 0.8
+        static let UPLOADED_PERCENTAGE: Double = 0.5
+        static let COLLECTION_PERCENTAGE: Double = 0.8 // collected / passed time
         
         // for updateProgress, 10 seconds
         static let TIME_INTERVAL: NSTimeInterval = 1
         static let TIME_INTERVAL_CHANGE: Float = 0.1
         
-        static let TIME_INTERVAL_COLLECTION: NSTimeInterval = 40 // 40 seconds
+        static let TIME_INTERVAL_COLLECTION: NSTimeInterval = 300 // 300 seconds
         
         // for startWaiting, 10 seconds
         static let TIME_INTERVAL_START_WAITING: NSTimeInterval = 1
@@ -30,6 +41,9 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         // for stopWaiting, 10 seconds
         static let TIME_INTERVAL_STOP_WAITING: NSTimeInterval = 1
         static let TIME_INTERVAL_STOP_WAITING_CHANGE: Float = 0.1
+        
+        // for passed time
+        static let TIME_FOR_COLLECTION: NSTimeInterval = 50
 
         // for uploading, 10 seconds
         static let TIME_INTERVAL_UPLOADING: NSTimeInterval = 1
@@ -73,6 +87,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     
     private var accuracyCollectedData = [Double]()
     private var uploadedDataNum: Int = 0
+    private var startTime_uploadedNum_Dict = [NSDate: Int]()
     
     @IBOutlet weak var timeProgress: UIProgressView!
     private var timeProgressNum: Float = 0
@@ -131,6 +146,18 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             self.step1ImageView!.image = UIImage(named: "on_1")
             self.step2ImageView!.image = UIImage(named: "on_2")
             self.step3ImageView!.image = UIImage(named: "on_3")
+            
+            //debug
+            self.collectedDataLabel.text = "col 0"
+            self.uploadedDataLabel.text = "up 0"
+            self.accuracyDataLabel.text = "acc 0"
+            self.averageAccuracyLabel.text = "avg 0"
+            self.uploadedStatusLabel.text = "n/a"
+            self.passedTimeLabel.text = "t 0"
+            if self.timerForDebugging != nil {
+                self.timerForDebugging.invalidate()
+            }
+            self.passedTime = 0
 
         }
         
@@ -175,7 +202,13 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         sender.hidden = true
         promptsLabel.text = Constants.Prompts.STAND_STILL
 
-        startTime = NSDate()
+        sync(startTime) {
+            self.startTime = NSDate()
+        }
+        sync(self.startTime_uploadedNum_Dict) {
+            self.startTime_uploadedNum_Dict[self.startTime] = 0
+        }
+
 
         self.changeDistanceFilter(0)
         self.getGPSData(true)
@@ -187,13 +220,21 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         // start waiting timer
         timerOfStartWaiting = NSTimer.scheduledTimerWithTimeInterval(Constants.TIME_INTERVAL_START_WAITING, target: self, selector: "startWaiting", userInfo: nil, repeats: true)
         
+        //debug timer
+        timerForDebugging = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "debugTimerSelector", userInfo: nil, repeats: true)
+        
         leftRightArrowImageView!.hidden = false
         rightRightArrowImageView!.hidden = false
         step1ImageView!.image = UIImage(named: "off_1")
         step1ImageView!.hidden = false
         step2ImageView!.hidden = false
         step3ImageView!.hidden = false
-
+        
+    }
+    
+    func debugTimerSelector() {
+        ++passedTime
+        passedTimeLabel.text = "t \(passedTime)"
     }
     
     // return to main start button
@@ -262,6 +303,8 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     
     func uploadingTimer() {
         
+        timerForDebugging.invalidate()
+        
         timeProgressNum += Constants.TIME_INTERVAL_UPLOADING_CHANGE
         timeProgress.setProgress(timeProgressNum, animated: true)
         
@@ -273,6 +316,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             uploadMarker(state)
             
             failedAndBackButtonOutlet!.hidden = false
+            abortButtonOutlet!.hidden = true
 
         }
     }
@@ -362,27 +406,14 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             }
         }
     }
-    
-//    func updateCollection(timer: NSTimer) {
-//        timeProgressNum += Constants.TIME_INTERVAL_CHANGE_FOR_COLLECTION
-//        timeProgress.setProgress(timeProgressNum, animated: true)
-//        if timeProgress.progress == 1.0 {
-//            getGPSData(false)
-//            timer.invalidate()
-//            timeProgress!.hidden = true
-//            self.changeDistanceFilter(10)
-//            
-//            finishTime = NSDate()
-//            uploadMarker()
-//            
-//            // used for finished task
-//            failedAndBackButtonOutlet!.hidden = false
-//            promptsLabel.text = Constants.Prompts.FINISHED_COLLECTION
-//        }
-//    }
 
     private func checkState(seconds: NSTimeInterval) -> String {
-        if seconds <= 10 || accuracyCollectedData.count <= Int(seconds - 2) {
+        let percentage = Double(accuracyCollectedData.count) / seconds
+        var uploadedDataPoint = 0
+        sync(self.startTime_uploadedNum_Dict) {
+            uploadedDataPoint = self.startTime_uploadedNum_Dict[self.startTime]!
+        }
+        if seconds <= Constants.TIME_FOR_COLLECTION || percentage < Constants.COLLECTION_PERCENTAGE {
             promptsLabel.text = Constants.Prompts.FAIL_LOW_NUM_POINTS
             return Constants.States.FAIL_LOW_NUM_POINTS
         }
@@ -390,12 +421,12 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             promptsLabel.text = Constants.Prompts.FAIL_LOW_ACCURACY
             return Constants.States.FAIL_LOW_ACCURACY
         }
-        else if Double(uploadedDataNum) / Double(accuracyCollectedData.count) <= Constants.UPLOADED_PERCENTAGE {
+        else if Double(uploadedDataPoint) / Double(accuracyCollectedData.count) <= Constants.UPLOADED_PERCENTAGE {
             promptsLabel.text = Constants.Prompts.FAIL_BAD_NETWORK
             return Constants.States.FAIL_BAD_NETWORK
         }
         promptsLabel.text = Constants.Prompts.SUCCESS
-        return Constants.States.SUCCESS
+        return Constants.States.SUCCESS + "_col:\(accuracyCollectedData.count)"
     }
     
     private func precheck() -> Bool {
@@ -417,15 +448,22 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     }
 
     
-    //delegate function
+    //delegate function for data collection
     func collectData(latitude: Double, longitude: Double, accuracy: Double, locTimestamp: NSDate) {
         accuracyCollectedData.append(accuracy)
-        self.saveRemotely(latitude, longitude: longitude, accuracy: accuracy, locTimestamp: locTimestamp)
+        self.saveRemotely(latitude, longitude: longitude, accuracy: accuracy, locTimestamp: locTimestamp, startTime: startTime)
+        
+        collectedDataLabel.text = "col \(accuracyCollectedData.count)"
+        accuracyDataLabel.text = "acc \(accuracy)"
+        averageAccuracyLabel.text = "avg \(self.getAverageFromDoubleArray(accuracyCollectedData))"
     }
     
-    //delegate function
+    //delegate function for precheck
     func collectAccuracyData(accuracy: Double) {
         accuracyData.append(accuracy)
+        //debug
+        accuracyDataLabel.text = "acc \(accuracy)"
+        collectedDataLabel.text = "col \(accuracyData.count)"
     }
     
     private func getAverageFromDoubleArray(array: [Double]) -> Double {
@@ -447,7 +485,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         return num
     }
     
-    private func saveRemotely(latitude: Double, longitude: Double, accuracy: Double, locTimestamp: NSDate) {
+    private func saveRemotely(latitude: Double, longitude: Double, accuracy: Double, locTimestamp: NSDate, startTime: NSDate) {
         // save all data locally and remotely
         let point = PFGeoPoint(latitude:latitude, longitude: longitude)
         
@@ -460,8 +498,12 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
             if !result {
             } else {
-                ++self.uploadedDataNum
-                println("uploaded: \(self.uploadedDataNum)")
+                sync(self.startTime_uploadedNum_Dict) {
+                    self.startTime_uploadedNum_Dict[startTime]! += 1
+                    self.uploadedDataLabel.text = "up \(self.startTime_uploadedNum_Dict[startTime]!)"
+                }
+//                ++self.uploadedDataNum
+//                self.uploadedDataLabel.text = "up \(self.uploadedDataNum)"
             }
         }
 
@@ -477,6 +519,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         marker.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
             if !result {
             } else {
+                self.uploadedStatusLabel.text = state
             }
         }
     }
@@ -497,3 +540,4 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     */
 
 }
+

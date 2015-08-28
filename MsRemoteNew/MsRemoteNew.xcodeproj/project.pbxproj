@@ -273,7 +273,6 @@
 				TargetAttributes = {
 					E5BA8F261AA750A900F6B097 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 59L99SR85U;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -508,6 +507,7 @@
 					"$(PROJECT_DIR)/MsRemoteNew",
 				);
 				INFOPLIST_FILE = MsRemoteNew/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -530,6 +530,7 @@
 					"$(PROJECT_DIR)/MsRemoteNew",
 				);
 				INFOPLIST_FILE = MsRemoteNew/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
