@@ -10,19 +10,38 @@ import UIKit
 import AudioToolbox
 
 class DataCollectionViewController: UIViewController, DataCollectionDelegate {
-    // Debugging label
-    @IBOutlet weak var collectedDataLabel: UILabel!
-    @IBOutlet weak var uploadedDataLabel: UILabel!
-    @IBOutlet weak var accuracyDataLabel: UILabel!
-    @IBOutlet weak var averageAccuracyLabel: UILabel!
-    @IBOutlet weak var uploadedStatusLabel: UILabel!
-    @IBOutlet weak var passedTimeLabel: UILabel!
-    //debug timer
-    private var timerForDebugging: NSTimer!
-    private var passedTime: Int = 0
+    
+//    @IBAction func buttonA(sender: AnyObject) {
+//        self.collectedDataLabel.hidden = true
+//        self.uploadedDataLabel.hidden = true
+//        self.accuracyDataLabel.hidden = true
+//        self.averageAccuracyLabel.hidden = true
+//        self.uploadedStatusLabel.hidden = true
+//        self.passedTimeLabel.hidden = true
+//    }
+//    
+//    @IBAction func buttonB(sender: AnyObject) {
+//        self.collectedDataLabel.hidden = false
+//        self.uploadedDataLabel.hidden = false
+//        self.accuracyDataLabel.hidden = false
+//        self.averageAccuracyLabel.hidden = false
+//        self.uploadedStatusLabel.hidden = false
+//        self.passedTimeLabel.hidden = false
+//    }
+//    
+//    // Debugging label
+//    @IBOutlet weak var collectedDataLabel: UILabel!
+//    @IBOutlet weak var uploadedDataLabel: UILabel!
+//    @IBOutlet weak var accuracyDataLabel: UILabel!
+//    @IBOutlet weak var averageAccuracyLabel: UILabel!
+//    @IBOutlet weak var uploadedStatusLabel: UILabel!
+//    @IBOutlet weak var passedTimeLabel: UILabel!
+//    //debug timer
+//    private var timerForDebugging: NSTimer!
+//    private var passedTime: Int = 0
     
     private struct Constants {
-        static let COUNT_OF_POINTS = 8
+        static let COUNT_OF_POINTS = 6 //
         static let ACCURACY_THREHOLD: Double = 10
         static let AVERAGE_ACCURACY_THREHOLD: Double = 15
         static let UPLOADED_PERCENTAGE: Double = 0.5
@@ -35,43 +54,49 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         static let TIME_INTERVAL_COLLECTION: NSTimeInterval = 300 // 300 seconds
         
         // for startWaiting, 10 seconds
+        static let START_WAITING_TIME: NSTimeInterval = 10
         static let TIME_INTERVAL_START_WAITING: NSTimeInterval = 1
         static let TIME_INTERVAL_START_WAITING_CHANGE: Float = 0.1
         
         // for stopWaiting, 10 seconds
+        static let STOP_WAITING_TIME: NSTimeInterval = 10
         static let TIME_INTERVAL_STOP_WAITING: NSTimeInterval = 1
         static let TIME_INTERVAL_STOP_WAITING_CHANGE: Float = 0.1
         
         // for passed time
-        static let TIME_FOR_COLLECTION: NSTimeInterval = 50
+        static let TIME_FOR_COLLECTION: NSTimeInterval = 60
 
-        // for uploading, 10 seconds
+        // for uploading, 20 seconds
         static let TIME_INTERVAL_UPLOADING: NSTimeInterval = 1
-        static let TIME_INTERVAL_UPLOADING_CHANGE: Float = 0.1
+        static let TIME_INTERVAL_UPLOADING_CHANGE: Float = 0.05
 
         private struct Prompts {
+            static let PRE_CHECK_WALKING = "Estimating signal quality\nPlease walk around the starting point"
             static let STAND_STILL = "Please stand still for a while"
-            static let READY_TO_WALK = "Ready to collect data"
-            static let CHANGE_LOCATION = "Please change location and try again"
-            static let FINISHED_COLLECTION = "Data collection is finished"
-            static let COLLECTING_DATA = "Collecting Data"
-            static let WAITING_FOR_UPLOADING = "Please wait for uploading data"
+            static let READY_TO_WALK = "You may start collecting data"
+            static let CHANGE_LOCATION = "Sinal quality is not good enough\nPlease change location and try again"
+            static let COLLECTING_DATA = "Start walking ...\nPress Stop when you want to stop walking"
+            static let WAITING_FOR_UPLOADING = "Analysing and uploading data ...\nYou may continue your activity"
             
             // results prompts
-            static let FAIL_TIME_OUT = "Time out. Please try again"
-            static let FAIL_LOW_ACCURACY = "Low accuarcy. Please change location and try again"
-            static let FAIL_BAD_NETWORK = "Bad network. Please check your network and try again"
-            static let FAIL_LOW_NUM_POINTS = "Low number of data. Please change location and try again"
-            static let SUCCESS = "Data collection is finished successfully"
+            static let FAIL_TIME_OUT = "Time out\nPlease try again"
+            static let FAIL_LOW_ACCURACY = "Bad GPS signal\nPlease change location and try again"
+            static let FAIL_LOW_GPS_POINTS = "Bad GPS signal\nPlease change location and try again"
+            static let FAIL_BAD_NETWORK = "Bad Internet connection\nPlease change location and try again"
+            static let FAIL_LOW_WALKING_TIME = "Not enough data\nPlease walk for a longer time"
+            static let SUCCESS = "Data collection is finished"
         }
         private struct States {
             static let FAIL_TIME_OUT = "FAIL_TIME_OUT"
             static let FAIL_LOW_ACCURACY = "FAIL_LOW_ACCURACY"
+            static let FAIL_LOW_GPS_POINTS = "FAIL_LOW_GPS_POINTS"
             static let FAIL_BAD_NETWORK = "FAIL_BAD_NETWORK"
-            static let FAIL_LOW_NUM_POINTS = "FAIL_LOW_NUM_POINTS"
+            static let FAIL_LOW_WALKING_TIME = "FAIL_LOW_WALKING_TIME"
             static let SUCCESS = "SUCCESS"
         }
     }
+    
+    @IBOutlet weak var walkTimerLabel: UILabel!
     
     private var firstUIViewController: FirstViewController!
     private var accuracyData = [Double]()
@@ -84,6 +109,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     private var timerOfStartWaiting: NSTimer!
     private var timerOfStopWaiting: NSTimer!
     private var timerOfUploading: NSTimer!
+    private var timerOfWalking: NSTimer!
     
     private var accuracyCollectedData = [Double]()
     private var uploadedDataNum: Int = 0
@@ -124,6 +150,9 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             if self.timerOfUploading != nil {
                 self.timerOfUploading.invalidate()
             }
+            if self.timerOfWalking != nil {
+                self.timerOfWalking.invalidate()
+            }
             
             self.getGPSData(false)
             self.getAccuracyData(false)
@@ -147,17 +176,19 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             self.step2ImageView!.image = UIImage(named: "on_2")
             self.step3ImageView!.image = UIImage(named: "on_3")
             
-            //debug
-            self.collectedDataLabel.text = "col 0"
-            self.uploadedDataLabel.text = "up 0"
-            self.accuracyDataLabel.text = "acc 0"
-            self.averageAccuracyLabel.text = "avg 0"
-            self.uploadedStatusLabel.text = "n/a"
-            self.passedTimeLabel.text = "t 0"
-            if self.timerForDebugging != nil {
-                self.timerForDebugging.invalidate()
-            }
-            self.passedTime = 0
+            self.walkTimerLabel!.hidden = true
+            
+//            //debug
+//            self.collectedDataLabel.text = "col 0"
+//            self.uploadedDataLabel.text = "up 0"
+//            self.accuracyDataLabel.text = "acc 0"
+//            self.averageAccuracyLabel.text = "avg 0"
+//            self.uploadedStatusLabel.text = "n/a"
+//            self.passedTimeLabel.text = "t 0"
+//            if self.timerForDebugging != nil {
+//                self.timerForDebugging.invalidate()
+//            }
+//            self.passedTime = 0
 
         }
         
@@ -191,6 +222,9 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         
         // used for finished task
         stopDataCollectionOutlet!.hidden = true
+        
+        timerOfWalking.invalidate()
+        walkTimerLabel!.hidden = true
     }
     
     // start walking button
@@ -221,7 +255,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         timerOfStartWaiting = NSTimer.scheduledTimerWithTimeInterval(Constants.TIME_INTERVAL_START_WAITING, target: self, selector: "startWaiting", userInfo: nil, repeats: true)
         
         //debug timer
-        timerForDebugging = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "debugTimerSelector", userInfo: nil, repeats: true)
+//        timerForDebugging = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "debugTimerSelector", userInfo: nil, repeats: true)
         
         leftRightArrowImageView!.hidden = false
         rightRightArrowImageView!.hidden = false
@@ -232,10 +266,10 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         
     }
     
-    func debugTimerSelector() {
-        ++passedTime
-        passedTimeLabel.text = "t \(passedTime)"
-    }
+//    func debugTimerSelector() {
+//        ++passedTime
+//        passedTimeLabel.text = "t \(passedTime)"
+//    }
     
     // return to main start button
     @IBOutlet weak var failedAndBackButtonOutlet: UIButton!
@@ -266,7 +300,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         self.getAccuracyData(true)
         
         promptsLabel!.hidden = false
-        promptsLabel!.text = Constants.Prompts.STAND_STILL
+        promptsLabel!.text = Constants.Prompts.PRE_CHECK_WALKING
         timeProgress!.hidden = false
         abortButtonOutlet!.hidden = false
         
@@ -294,6 +328,17 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         failedAndBackButtonOutlet!.hidden = true
         promptsLabel!.hidden = true
         timeProgress!.hidden = true
+        
+        walkTimerLabel!.hidden = true
+        
+//        //debug
+//        self.collectedDataLabel.hidden = true
+//        self.uploadedDataLabel.hidden = true
+//        self.accuracyDataLabel.hidden = true
+//        self.averageAccuracyLabel.hidden = true
+//        self.uploadedStatusLabel.hidden = true
+//        self.passedTimeLabel.hidden = true
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -303,7 +348,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     
     func uploadingTimer() {
         
-        timerForDebugging.invalidate()
+//        timerForDebugging.invalidate()
         
         timeProgressNum += Constants.TIME_INTERVAL_UPLOADING_CHANGE
         timeProgress.setProgress(timeProgressNum, animated: true)
@@ -372,18 +417,46 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             
             step1ImageView!.image = UIImage(named: "on_1")
             step2ImageView!.image = UIImage(named: "off_2")
+            
+            // start walking timer
+            self.walkTimerLabel!.text = "00:00"
+            self.walkTimerLabel!.hidden = false
+            timerOfWalking = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateWalkingTimer", userInfo: nil, repeats: true)
         }
+    }
+    
+    
+    func updateWalkingTimer() {
+        walkTimerLabel!.text = findTimeString(NSDate().timeIntervalSinceDate(startTime) - 10.0)
+    }
+    
+    private func findTimeString(seconds: NSTimeInterval) -> String {
+        let min: Int = Int(seconds / 60)
+        var minString = "\(min)"
+        if min < 10 {
+            minString = "0" + minString
+        }
+        
+        let sec: Int = Int(seconds - Double(min) * 60)
+        var secString = "\(sec)"
+        if sec < 10 {
+            secString = "0" + secString
+        }
+        return "\(minString):\(secString)"
     }
     
     func timeOutFunction() {
         timerOfCollection = nil
-
+        
         getGPSData(false)
         self.changeDistanceFilter(10)
         stopDataCollectionOutlet!.hidden = true
         failedAndBackButtonOutlet!.hidden = false
         promptsLabel.text = Constants.Prompts.FAIL_TIME_OUT
 
+        timerOfWalking.invalidate()
+        walkTimerLabel!.hidden = true
+        
         uploadMarker(Constants.States.FAIL_TIME_OUT)
     }
     
@@ -408,14 +481,17 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     }
 
     private func checkState(seconds: NSTimeInterval) -> String {
-        let percentage = Double(accuracyCollectedData.count) / seconds
         var uploadedDataPoint = 0
         sync(self.startTime_uploadedNum_Dict) {
             uploadedDataPoint = self.startTime_uploadedNum_Dict[self.startTime]!
         }
-        if seconds <= Constants.TIME_FOR_COLLECTION || percentage < Constants.COLLECTION_PERCENTAGE {
-            promptsLabel.text = Constants.Prompts.FAIL_LOW_NUM_POINTS
-            return Constants.States.FAIL_LOW_NUM_POINTS
+        if seconds <= Constants.TIME_FOR_COLLECTION {
+            promptsLabel.text = Constants.Prompts.FAIL_LOW_WALKING_TIME
+            return Constants.States.FAIL_LOW_WALKING_TIME
+        }
+        else if walkingPercentageCheck(seconds) < Constants.COLLECTION_PERCENTAGE {
+            promptsLabel.text = Constants.Prompts.FAIL_LOW_GPS_POINTS
+            return Constants.States.FAIL_LOW_GPS_POINTS
         }
         else if getAverageFromDoubleArray(self.accuracyCollectedData) > Constants.AVERAGE_ACCURACY_THREHOLD {
             promptsLabel.text = Constants.Prompts.FAIL_LOW_ACCURACY
@@ -429,8 +505,11 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         return Constants.States.SUCCESS + "_col:\(accuracyCollectedData.count)"
     }
     
+    private func walkingPercentageCheck(seconds: NSTimeInterval) -> Double {
+        return Double(accuracyCollectedData.count) / (seconds - Constants.START_WAITING_TIME - Constants.STOP_WAITING_TIME)
+    }
+    
     private func precheck() -> Bool {
-//        return accuracyData.count >= Constants.COUNT_OF_POINTS && getAverageFromDoubleArray(accuracyData) <= Constants.AVERAGE_OF_ACCURACY
         return getNumOfGoodAccuracy(accuracyData) >= Constants.COUNT_OF_POINTS
     }
     
@@ -453,17 +532,17 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         accuracyCollectedData.append(accuracy)
         self.saveRemotely(latitude, longitude: longitude, accuracy: accuracy, locTimestamp: locTimestamp, startTime: startTime)
         
-        collectedDataLabel.text = "col \(accuracyCollectedData.count)"
-        accuracyDataLabel.text = "acc \(accuracy)"
-        averageAccuracyLabel.text = "avg \(self.getAverageFromDoubleArray(accuracyCollectedData))"
+//        collectedDataLabel.text = "col \(accuracyCollectedData.count)"
+//        accuracyDataLabel.text = "acc \(accuracy)"
+//        averageAccuracyLabel.text = "avg \(self.getAverageFromDoubleArray(accuracyCollectedData))"
     }
     
     //delegate function for precheck
     func collectAccuracyData(accuracy: Double) {
         accuracyData.append(accuracy)
-        //debug
-        accuracyDataLabel.text = "acc \(accuracy)"
-        collectedDataLabel.text = "col \(accuracyData.count)"
+//        //debug
+//        accuracyDataLabel.text = "acc \(accuracy)"
+//        collectedDataLabel.text = "col \(accuracyData.count)"
     }
     
     private func getAverageFromDoubleArray(array: [Double]) -> Double {
@@ -495,13 +574,15 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         record["location"] = point
         record["accuracy"] = accuracy
         record["locTimestamp"] = locTimestamp
-        record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+        record.saveInBackgroundWithBlock { (result:Bool, error:NSError?) -> Void in
             if !result {
             } else {
                 sync(self.startTime_uploadedNum_Dict) {
                     self.startTime_uploadedNum_Dict[startTime]! += 1
-                    self.uploadedDataLabel.text = "up \(self.startTime_uploadedNum_Dict[startTime]!)"
                 }
+//                dispatch_async(dispatch_get_main_queue()) {
+//                    self.uploadedDataLabel.text = "up \(self.startTime_uploadedNum_Dict[startTime]!)"
+//                }
 //                ++self.uploadedDataNum
 //                self.uploadedDataLabel.text = "up \(self.uploadedDataNum)"
             }
@@ -516,10 +597,10 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         marker["finishTime"] = finishTime
         marker["state"] = state
 
-        marker.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+        marker.saveInBackgroundWithBlock { (result:Bool, error:NSError?) -> Void in
             if !result {
             } else {
-                self.uploadedStatusLabel.text = state
+//                self.uploadedStatusLabel.text = state
             }
         }
     }

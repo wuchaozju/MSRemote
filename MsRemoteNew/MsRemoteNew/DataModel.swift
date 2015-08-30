@@ -124,13 +124,13 @@ class DataModel {
         record["groupOfDay"] = newRecord.groupOfDay
         record["locTimestamp"] = newRecord.locTimestamp
         
-        record.pinInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+        record.pinInBackgroundWithBlock { (result:Bool, error:NSError?) -> Void in
 
         }
         
-        record.saveInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+        record.saveInBackgroundWithBlock { (result:Bool, error:NSError?) -> Void in
             if !result {
-                println("error happened when uploading data: \(error.description)")
+                println("error happened when uploading data: \(error?.description)")
             } else {
                 println("upload successfully")
             }
@@ -158,7 +158,7 @@ class DataModel {
         record["groupOfDay"] = newRecord.groupOfDay
         record["locTimestamp"] = newRecord.locTimestamp
         
-        record.pinInBackgroundWithBlock { (result:Bool, error:NSError!) -> Void in
+        record.pinInBackgroundWithBlock { (result:Bool, error:NSError?) -> Void in
             
         }
     }

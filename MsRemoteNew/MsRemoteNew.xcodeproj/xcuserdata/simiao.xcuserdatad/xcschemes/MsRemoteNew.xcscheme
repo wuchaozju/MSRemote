@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E5BA8F261AA750A900F6B097"
-               BuildableName = "MsRemoteNew.app"
+               BuildableName = "WalkMeter.app"
                BlueprintName = "MsRemoteNew"
                ReferencedContainer = "container:MsRemoteNew.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E5BA8F261AA750A900F6B097"
-            BuildableName = "MsRemoteNew.app"
+            BuildableName = "WalkMeter.app"
             BlueprintName = "MsRemoteNew"
             ReferencedContainer = "container:MsRemoteNew.xcodeproj">
          </BuildableReference>
@@ -72,11 +72,12 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E5BA8F261AA750A900F6B097"
-            BuildableName = "MsRemoteNew.app"
+            BuildableName = "WalkMeter.app"
             BlueprintName = "MsRemoteNew"
             ReferencedContainer = "container:MsRemoteNew.xcodeproj">
          </BuildableReference>
@@ -90,11 +91,12 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E5BA8F261AA750A900F6B097"
-            BuildableName = "MsRemoteNew.app"
+            BuildableName = "WalkMeter.app"
             BlueprintName = "MsRemoteNew"
             ReferencedContainer = "container:MsRemoteNew.xcodeproj">
          </BuildableReference>

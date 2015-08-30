@@ -253,7 +253,9 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             
             let polyline = MKPolyline(coordinates: &a, count: a.count)
             var speed: Double = calculateSpeed(preLoc, destination: location)
-            
+            if speed >= 2.1 {
+                speed = 2.1
+            }
             // for walking speed
 //            if speed > 0 && speed <= 2 {
                 // get time

@@ -59,13 +59,13 @@
 		3BAC57BE1AD0295B00774367 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		3BC66AEC1AC4F8470013C381 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		8D1C187A5622EF1C5F4C2D9F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		E5BA8F271AA750A900F6B097 /* MsRemoteNew.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MsRemoteNew.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5BA8F271AA750A900F6B097 /* WalkMeter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WalkMeter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BA8F2B1AA750A900F6B097 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5BA8F2C1AA750A900F6B097 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BA8F2E1AA750A900F6B097 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		E5BA8F331AA750A900F6B097 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E5BA8F381AA750A900F6B097 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		E5BA8F3E1AA750A900F6B097 /* MsRemoteNewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MsRemoteNewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5BA8F3E1AA750A900F6B097 /* WalkMeter.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WalkMeter.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BA8F431AA750A900F6B097 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5BA8F441AA750A900F6B097 /* MsRemoteNewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MsRemoteNewTests.swift; sourceTree = "<group>"; };
 		E5BA8F4E1AA750C500F6B097 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -151,8 +151,8 @@
 		E5BA8F281AA750A900F6B097 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E5BA8F271AA750A900F6B097 /* MsRemoteNew.app */,
-				E5BA8F3E1AA750A900F6B097 /* MsRemoteNewTests.xctest */,
+				E5BA8F271AA750A900F6B097 /* WalkMeter.app */,
+				E5BA8F3E1AA750A900F6B097 /* WalkMeter.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,7 +241,7 @@
 			);
 			name = MsRemoteNew;
 			productName = MsRemoteNew;
-			productReference = E5BA8F271AA750A900F6B097 /* MsRemoteNew.app */;
+			productReference = E5BA8F271AA750A900F6B097 /* WalkMeter.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E5BA8F3D1AA750A900F6B097 /* MsRemoteNewTests */ = {
@@ -259,7 +259,7 @@
 			);
 			name = MsRemoteNewTests;
 			productName = MsRemoteNewTests;
-			productReference = E5BA8F3E1AA750A900F6B097 /* MsRemoteNewTests.xctest */;
+			productReference = E5BA8F3E1AA750A900F6B097 /* WalkMeter.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -510,7 +510,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WalkMeter;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MsRemoteNew/MsRemoteNew-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -533,7 +533,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WalkMeter;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MsRemoteNew/MsRemoteNew-Bridging-Header.h";
 			};
@@ -553,8 +553,8 @@
 				);
 				INFOPLIST_FILE = MsRemoteNewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MsRemoteNew.app/MsRemoteNew";
+				PRODUCT_NAME = WalkMeter;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WalkMeter.app/WalkMeter";
 			};
 			name = Debug;
 		};
@@ -568,8 +568,8 @@
 				);
 				INFOPLIST_FILE = MsRemoteNewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MsRemoteNew.app/MsRemoteNew";
+				PRODUCT_NAME = WalkMeter;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WalkMeter.app/WalkMeter";
 			};
 			name = Release;
 		};
