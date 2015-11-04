@@ -79,6 +79,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             static let BEFORE_PRE_CHECK = "Press ESTIMATE and walk around\nto estimate signal quality"
             static let PRE_CHECK_WALKING = "Estimating signal quality\nPlease walk around the starting point"
             static let STAND_STILL = "Please stand still for a while\nbefore you start walking"
+            static let STAND_STILL_AFTER_WALKING = "Please stand still for a while"
             static let READY_TO_WALK = "You may start collecting data"
             static let CHANGE_LOCATION = "Signal quality is not good enough\nPlease change location and try again"
             static let COLLECTING_DATA = "Start walking ...\nPress STOP when you want to stop walking"
@@ -227,7 +228,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         if timerOfCollection != nil {
             timerOfCollection.invalidate()
         }
-        promptsLabel.text = Constants.Prompts.STAND_STILL
+        promptsLabel.text = Constants.Prompts.STAND_STILL_AFTER_WALKING
         
         self.timeProgress!.hidden = false
         self.timeProgressNum = 0
@@ -481,6 +482,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         timerOfWalking.invalidate()
         walkTimerLabel!.hidden = true
         
+        finishTime = NSDate()
         uploadMarker(Constants.States.FAIL_TIME_OUT)
     }
     

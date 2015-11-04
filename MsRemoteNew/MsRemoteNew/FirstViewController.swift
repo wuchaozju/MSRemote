@@ -252,7 +252,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             var a = [c1, c2]
             
             let polyline = MKPolyline(coordinates: &a, count: a.count)
-            var speed: Double = calculateSpeed(preLoc, destination: location)
+            let speed: Double = calculateSpeed(preLoc, destination: location)
 //            if speed >= 2.1 {
 //                speed = 2.1
 //            }
@@ -326,11 +326,11 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     // find colors for different speeds
     func findColorForSpeed(speed: Double) -> UIColor{
         switch speed {
-        case 0..<0.7:
+        case 0..<1.0:
             return UIColor.redColor()
-        case 0.7..<1.4:
+        case 1.0..<2.0:
             return UIColor.greenColor()
-        case 1.4..<2.0:
+        case 2.0..<4.0:
             return UIColor.blueColor()
         default:
             return UIColor.blackColor()
