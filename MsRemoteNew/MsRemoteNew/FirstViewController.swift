@@ -25,7 +25,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     let userID = NSUserDefaults.standardUserDefaults().stringForKey("userID") ?? UIDevice.currentDevice().name
 
     
-    var chartDelegate: UpdateChartDelegate?
+//    var chartDelegate: UpdateChartDelegate?
     var dataCollectionDelegate: DataCollectionDelegate?
     
     // if data is transfered to data collection part
@@ -33,7 +33,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     var accuracyCollectionOn: Bool = false
     
     let slsLocationManager = CLLocationManager()
-    var dataModel: DataModel!
+//    var dataModel: DataModel!
     
     // store locations
     var locationArray: [CLLocation] = []
@@ -52,7 +52,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         let spanX = 0.007
         let spanY = 0.007
         
-        var newRegion = MKCoordinateRegion(center: map.userLocation.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
+        let newRegion = MKCoordinateRegion(center: map.userLocation.coordinate, span: MKCoordinateSpanMake(spanX, spanY))
         map.setRegion(newRegion, animated: true)
     }
     
@@ -209,11 +209,11 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
     }
     
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         launchLocationUpdate()
     }
     
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         
         if error.code == CLError.Denied.rawValue {
             
@@ -230,8 +230,8 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         }
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!){
-        var location:CLLocation = locations.last as! CLLocation
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        let location:CLLocation = locations.last!
         
         // discard bad data
         let accuracyInMeter = location.horizontalAccuracy
@@ -253,37 +253,37 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             
             let polyline = MKPolyline(coordinates: &a, count: a.count)
             var speed: Double = calculateSpeed(preLoc, destination: location)
-            if speed >= 2.1 {
-                speed = 2.1
-            }
+//            if speed >= 2.1 {
+//                speed = 2.1
+//            }
             // for walking speed
 //            if speed > 0 && speed <= 2 {
                 // get time
-                let timeDifference = location.timestamp.timeIntervalSinceDate(preLoc.timestamp)
-                let averagedTimePointForSpeed = NSDate(timeInterval: timeDifference / 2, sinceDate: preLoc.timestamp)
-                let timeStampForLoc = location.timestamp
+//            let timeDifference = location.timestamp.timeIntervalSinceDate(preLoc.timestamp)
+//            let averagedTimePointForSpeed = NSDate(timeInterval: timeDifference / 2, sinceDate: preLoc.timestamp)
+            let timeStampForLoc = location.timestamp
             
                 // save data
-                if dataModel == nil {
-                    dataModel = DataModel()
+//                if dataModel == nil {
+//                    dataModel = DataModel()
 //                    if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(averagedTimePointForSpeed) {
 //                        chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
 //                    }
-                }
-                let (oldday, timeSec) = dataModel.saveData(averagedTimePointForSpeed, speed: speed, duration: timeDifference, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter, locTimestamp: timeStampForLoc)
-                if oldday == false { // new day
-                    
+//        }
+//                let (oldday, timeSec) = dataModel.saveData(averagedTimePointForSpeed, speed: speed, duration: timeDifference, latitude: latitude, longitude: longitude, accuracy: accuracyInMeter, locTimestamp: timeStampForLoc)
+//                if oldday == false { // new day
+            
                     // remove tracks
-                    map.removeOverlays(overlayArray)
-                    overlayArray.removeAll(keepCapacity: false)
+//                    map.removeOverlays(overlayArray)
+//                    overlayArray.removeAll(keepCapacity: false)
+            
+//                    // notify core plot Chart VC
+//                    chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed, time: timeSec)
                     
-                    // notify core plot Chart VC
-                    chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed, time: timeSec)
-                    
-                } else {
-                    // notify core plot Chart VC
-                    chartDelegate?.updateChart(speed, time: timeSec)
-                }
+//                } else {
+//                    // notify core plot Chart VC
+//                    chartDelegate?.updateChart(speed, time: timeSec)
+//                }
             
             if self.dataCollectionOn == true {
                 dataCollectionDelegate?.collectData(latitude, longitude: longitude, accuracy: accuracyInMeter, locTimestamp: timeStampForLoc)
@@ -299,7 +299,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             }
             overlayArray.append(polyline)
             map.addOverlay(polyline)
-        
+            
         }
         
     }
@@ -318,8 +318,8 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
     
     // calculate speed between two locations
     func calculateSpeed(source: CLLocation, destination: CLLocation) -> Double {
-        var distance = source.distanceFromLocation(destination)
-        var speed = distance / (destination.timestamp.timeIntervalSinceDate(source.timestamp))
+        let distance = source.distanceFromLocation(destination)
+        let speed = distance / (destination.timestamp.timeIntervalSinceDate(source.timestamp))
         return speed
     }
     
@@ -337,10 +337,10 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         }
     }
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         if overlay is MKPolyline {
             let forSpeed: MKPolyline = overlay as! MKPolyline
-            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
             
             var speed: Double?
             sync(Poly_Speed){
@@ -363,7 +363,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
             self.Poly_Speed.removeAll(keepCapacity: true)
         }
         
-        return nil
+        return MKOverlayRenderer()
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -393,7 +393,7 @@ class FirstViewController: UIViewController, MKMapViewDelegate, CLLocationManage
         
         let DoneAction = UIAlertAction(title: "Done", style: .Default) { (_) in
             // save user ID
-            let UserIDTextField = alertController.textFields![0] as! UITextField
+            let UserIDTextField = alertController.textFields![0] 
             NSUserDefaults.standardUserDefaults().setObject(UserIDTextField.text, forKey: "userID")
             
             self.basicSetup()

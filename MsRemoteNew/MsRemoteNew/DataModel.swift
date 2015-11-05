@@ -62,12 +62,12 @@ class DataModel {
         
         // new day begins
         if dateOfTodayStr != date {
-            
             dateOfTodayStr = date
             today0AM = formatter.dateFromString(date)!
             
             var dict = NSUserDefaults.standardUserDefaults().dictionaryForKey("MSRecord") as? [String: Int]
-            
+
+
             if dict == nil {
                 var newDict = [String: Int]()
                 newDict[date] = 1
@@ -108,7 +108,7 @@ class DataModel {
         // save all data locally and remotely
         let point = PFGeoPoint(latitude:newRecord.latitude, longitude:newRecord.longitude)
 
-        var record = PFObject(className: "UserLocation")
+        let record = PFObject(className: "UserLocation")
         
         // for stored user ID
         // use name of current device if no valid user ID is found
@@ -130,9 +130,9 @@ class DataModel {
         
         record.saveInBackgroundWithBlock { (result:Bool, error:NSError?) -> Void in
             if !result {
-                println("error happened when uploading data: \(error?.description)")
+                print("error happened when uploading data: \(error?.description)")
             } else {
-                println("upload successfully")
+                print("upload successfully")
             }
         }
     }
@@ -142,7 +142,7 @@ class DataModel {
         // save all data locally and remotely
         let point = PFGeoPoint(latitude:newRecord.latitude, longitude:newRecord.longitude)
         
-        var record = PFObject(className: "UserLocation")
+        let record = PFObject(className: "UserLocation")
         
         // for stored user ID
         // use name of current device if no valid user ID is found
@@ -182,11 +182,17 @@ class DataModel {
             query.whereKey("groupOfDay", equalTo: i)
             query.limit = 1000
             
-            let objects = query.findObjects() as! [PFObject]
-            for object in objects {
-                speedArray.append(object["speed"] as! Double)
-                timeArray.append(object["timePoint"] as! Double)
+            do {
+                let objects = try query.findObjects()
+                
+                for object in objects {
+                    speedArray.append(object["speed"] as! Double)
+                    timeArray.append(object["timePoint"] as! Double)
+                }
+            } catch {
+                
             }
+
         }
         return (speedArray, timeArray)
     }

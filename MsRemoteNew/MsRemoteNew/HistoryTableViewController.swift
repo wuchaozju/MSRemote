@@ -64,7 +64,7 @@ class HistoryTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(History.ReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(History.ReuseIdentifier, forIndexPath: indexPath) 
 
         // Configure the cell...
         cell.textLabel?.text = dateFormatter(datesWithRecords[indexPath.row].date)
@@ -102,11 +102,10 @@ class HistoryTableViewController: UITableViewController {
             let date = formatter.stringFromDate(NSDate())
             // remove today from dict
             dict.removeValueForKey(date)
-
             for (key, value) in dict {
                 datesWithRecords.append(DateTrans(date: formatter.dateFromString(key)!, records: value))
             }
-            datesWithRecords.sort() {$0.0.date.compare($1.0.date) == NSComparisonResult.OrderedAscending}
+            datesWithRecords.sortInPlace() {$0.date.compare($1.date) == NSComparisonResult.OrderedAscending}
         }
         
     }

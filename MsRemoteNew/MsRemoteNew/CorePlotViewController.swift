@@ -32,7 +32,14 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         
         let NaviVC = self.tabBarController!.viewControllers![0] as! UINavigationController
         let FirstVC = NaviVC.topViewController as! FirstViewController
-        FirstVC.chartDelegate = self
+        let thirdVC = self.tabBarController!.viewControllers![2] as! DataCollectionViewController
+        thirdVC.chartDelegate = self
+        if thirdVC.dataModel == nil {
+            thirdVC.dataModel = DataModel()
+            if let (speedArray, timeArray) = thirdVC.dataModel.getExistingRecordsForToday(NSDate()) {
+                self.initChartWithExistingRecords(speedArray, timeArray: timeArray)
+            }
+        }
         FirstVC.launchLocationUpdate()
         
         // configure plot parameters
@@ -64,19 +71,20 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     
     // delegate methods for retrieving data
     func updateChart(speed: Double, time: NSTimeInterval) {
-        let index = Int(time / Double(timeIntervalToShowData * 60))
-        if compressSpeedWithFixedTimePoint[index] == nil {
-            compressSpeedWithFixedTimePoint[index] = [Double]()
-            compressSpeedWithFixedTimePoint[index]!.append(speed)
-            
-            speedData.append(speed)
-            let supposedTimePoint: Double = (Double(index) + 0.5) * Double(timeIntervalToShowData * 60)
-            timeData.append(supposedTimePoint)
-        } else {
-            compressSpeedWithFixedTimePoint[index]!.append(speed)
-            speedData[speedData.count - 1] = averageOf(compressSpeedWithFixedTimePoint[index]!)
-        }
-        
+//        let index = Int(time / Double(timeIntervalToShowData * 60))
+//        if compressSpeedWithFixedTimePoint[index] == nil {
+//            compressSpeedWithFixedTimePoint[index] = [Double]()
+//            compressSpeedWithFixedTimePoint[index]!.append(speed)
+//            
+//            speedData.append(speed)
+//            let supposedTimePoint: Double = (Double(index) + 0.5) * Double(timeIntervalToShowData * 60)
+//            timeData.append(supposedTimePoint)
+//        } else {
+//            compressSpeedWithFixedTimePoint[index]!.append(speed)
+//            speedData[speedData.count - 1] = averageOf(compressSpeedWithFixedTimePoint[index]!)
+//        }
+        speedData.append(speed)
+        timeData.append(time)
         // reload data for only newly-added point
         self.graphView.hostedGraph.plotAtIndex(0).reloadDataInIndexRange(NSMakeRange(speedData.count - 1, 1))
     }
@@ -84,27 +92,32 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     func updateChart(newDate: String, speed: Double, time: NSTimeInterval) {
         speedData.removeAll(keepCapacity: false)
         timeData.removeAll(keepCapacity: false)
-        // configure plot parameters
-        let slotNum = 60 * 24 / timeIntervalToShowData
-        compressSpeedWithFixedTimePoint = [[Double]?](count: slotNum, repeatedValue: nil)
+//        // configure plot parameters
+//        let slotNum = 60 * 24 / timeIntervalToShowData
+//        compressSpeedWithFixedTimePoint = [[Double]?](count: slotNum, repeatedValue: nil)
         updateChart(speed, time: time)
     }
     
     func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double]) {
-        
-        if speedArray.count != 0 && timeArray.count == speedArray.count {
-            for i in 0...speedArray.count-1 {
-                let index = Int(timeArray[i] / Double(timeIntervalToShowData * 60))
-                if compressSpeedWithFixedTimePoint[index] == nil {
-                    compressSpeedWithFixedTimePoint[index] = [Double]()
-                }
-                compressSpeedWithFixedTimePoint[index]!.append(speedArray[i])
-            }
-        }
-        
-        generatePlotData()
+        self.speedData = speedArray
+        self.timeData = timeArray
         self.graphView.hostedGraph.plotAtIndex(0).reloadData()
     }
+    
+//    func initChartWithExistingRecords(speedArray: [Double], timeArray: [Double]) {
+//        if speedArray.count != 0 && timeArray.count == speedArray.count {
+//            for i in 0...speedArray.count-1 {
+//                let index = Int(timeArray[i] / Double(timeIntervalToShowData * 60))
+//                if compressSpeedWithFixedTimePoint[index] == nil {
+//                    compressSpeedWithFixedTimePoint[index] = [Double]()
+//                }
+//                compressSpeedWithFixedTimePoint[index]!.append(speedArray[i])
+//            }
+//        }
+//        
+//        generatePlotData()
+//        self.graphView.hostedGraph.plotAtIndex(0).reloadData()
+//    }
     
     private func generatePlotData() {
         for i in 0..<compressSpeedWithFixedTimePoint.count {
@@ -157,7 +170,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
     
     // create graph
     func configureGraph() {
-        var graph = CPTXYGraph(frame: graphView.bounds)
+        let graph = CPTXYGraph(frame: graphView.bounds)
         graphView.hostedGraph = graph
         //        graph.title = ""
         graph.paddingBottom = CGFloat(0)
@@ -170,51 +183,52 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         graph.plotAreaFrame.paddingLeft = CGFloat(40)
         graph.plotAreaFrame.paddingRight = CGFloat(20)
         
-        var plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
+        let plotSpace = graph.defaultPlotSpace as! CPTXYPlotSpace
         plotSpace.xRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(int: 86400))
-        plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(float: 2.2))
+        plotSpace.yRange = CPTPlotRange(location: NSNumber(int: 0), length: NSNumber(float: 4.2))
         }
     
     // configure plot
     func configurePlot() {
         // add scatter plot
-        var scatPlot = CPTScatterPlot(frame: self.graphView.hostedGraph.frame)
+        let scatPlot = CPTScatterPlot(frame: self.graphView.hostedGraph.frame)
         scatPlot.dataSource = self
         self.graphView.hostedGraph.addPlot(scatPlot, toPlotSpace: self.graphView.hostedGraph.defaultPlotSpace)
         
-        var lineStyle = CPTMutableLineStyle()
+        let lineStyle = CPTMutableLineStyle()
         lineStyle.lineWidth = 0.5
         let lineColor = CPTColor.blueColor()
         lineStyle.lineColor = lineColor.colorWithAlphaComponent(0.5)
         
-        scatPlot.dataLineStyle = lineStyle
+        scatPlot.dataLineStyle = nil
         
-        var plotSymbol = CPTPlotSymbol.ellipsePlotSymbol()
-        plotSymbol.fill = nil
-        plotSymbol.size = CGSizeMake(1.5, 1.5)
+        let plotSymbol = CPTPlotSymbol.ellipsePlotSymbol()
+        plotSymbol.fill = CPTFill(color: CPTColor(componentRed: 0, green: 0, blue: 1, alpha: 0.5))
+        plotSymbol.lineStyle = nil
+        plotSymbol.size = CGSizeMake(10.0, 10.0)
         scatPlot.plotSymbol = plotSymbol
     }
     
     // configure axes
     func configureAxes() {
-        var axisSet = self.graphView.hostedGraph.axisSet as! CPTXYAxisSet
+        let axisSet = self.graphView.hostedGraph.axisSet as! CPTXYAxisSet
         
-        var axisTextStyle = CPTMutableTextStyle()
+        let axisTextStyle = CPTMutableTextStyle()
         axisTextStyle.color = CPTColor.blackColor()
         axisTextStyle.fontName = "Helvetica-Bold"
         axisTextStyle.fontSize = CGFloat(12.0)
         
-        var axisLineStyle = CPTMutableLineStyle()
+        let axisLineStyle = CPTMutableLineStyle()
         axisLineStyle.lineWidth = CGFloat(2)
         axisLineStyle.lineColor = CPTColor.blackColor()
         
-        var xAxisTickLineStype = CPTMutableLineStyle()
+        let xAxisTickLineStype = CPTMutableLineStyle()
         xAxisTickLineStype.lineWidth = CGFloat(0.5)
         xAxisTickLineStype.lineColor = CPTColor.redColor()
         xAxisTickLineStype.dashPattern = [CGFloat(1), CGFloat(1)]
         
         // for x axis
-        var x = axisSet.xAxis
+        let x = axisSet.xAxis
         x.title = "Time of day (hours)"
         x.titleOffset = CGFloat(-35)
         x.titleTextStyle = axisTextStyle
@@ -225,8 +239,8 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         x.majorTickLength = CGFloat(self.graphView.frame.height - 40 - 20)
         x.tickDirection = CPTSign.Positive
         
-        var xLabels = NSMutableSet(capacity: 25)
-        var xLocations = NSMutableSet(capacity: 25)
+        let xLabels = NSMutableSet(capacity: 25)
+        let xLocations = NSMutableSet(capacity: 25)
         
         for i in 0...24 {
             let label = CPTAxisLabel(text: "\(i)", textStyle: axisTextStyle)
@@ -241,7 +255,7 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         x.majorTickLocations = xLocations as Set<NSObject>
         
         // for y axis
-        var y = axisSet.yAxis
+        let y = axisSet.yAxis
         y.title = "Speed (m/s)"
         y.titleOffset = CGFloat(-35)
         y.titleTextStyle = axisTextStyle
@@ -252,12 +266,12 @@ class CorePlotViewController: UIViewController, UIPopoverPresentationControllerD
         y.majorTickLength = CGFloat(self.graphView.frame.width - 40 - 20)
         y.tickDirection = CPTSign.Positive
         
-        var yLabels = NSMutableSet(capacity: 13)
-        var yLocations = NSMutableSet(capacity: 13)
+        let yLabels = NSMutableSet(capacity: 13)
+        let yLocations = NSMutableSet(capacity: 13)
         
-        for i in 0...7 {
-            let label = CPTAxisLabel(text: "\(Float(i) * 0.3)", textStyle: axisTextStyle)
-            let location = NSNumber(float: Float(i) * 0.3)
+        for i in 0...8 {
+            let label = CPTAxisLabel(text: "\(Float(i) * 0.5)", textStyle: axisTextStyle)
+            let location = NSNumber(float: Float(i) * 0.5)
             label.tickLocation = location
             label.offset = CGFloat(-20)
             yLabels.addObject(label)

@@ -10,7 +10,8 @@ import UIKit
 import AudioToolbox
 
 class DataCollectionViewController: UIViewController, DataCollectionDelegate {
-    
+        var chartDelegate: UpdateChartDelegate?
+
 //    @IBAction func buttonA(sender: AnyObject) {
 //        self.collectedDataLabel.hidden = true
 //        self.uploadedDataLabel.hidden = true
@@ -41,15 +42,15 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
 //    private var passedTime: Int = 0
     
     private struct Constants {
-        static let COUNT_OF_POINTS = 6 //
+        static let COUNT_OF_POINTS = 7 //
         static let ACCURACY_THREHOLD: Double = 10
         static let AVERAGE_ACCURACY_THREHOLD: Double = 15
         static let UPLOADED_PERCENTAGE: Double = 0.5
         static let COLLECTION_PERCENTAGE: Double = 0.8 // collected / passed time
         
-        // for updateProgress, 10 seconds
+        // for updateProgress, 12 seconds
         static let TIME_INTERVAL: NSTimeInterval = 1
-        static let TIME_INTERVAL_CHANGE: Float = 0.1
+        static let TIME_INTERVAL_CHANGE: Float = 0.083333
         
         static let TIME_INTERVAL_COLLECTION: NSTimeInterval = 300 // 300 seconds
         
@@ -64,27 +65,32 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         static let TIME_INTERVAL_STOP_WAITING_CHANGE: Float = 0.1
         
         // for passed time
-        static let TIME_FOR_COLLECTION: NSTimeInterval = 60
+        static let TIME_FOR_COLLECTION: NSTimeInterval = 30
+//        static let TIME_FOR_COLLECTION: NSTimeInterval = 0
+
 
         // for uploading, 20 seconds
         static let TIME_INTERVAL_UPLOADING: NSTimeInterval = 1
         static let TIME_INTERVAL_UPLOADING_CHANGE: Float = 0.05
+//        static let TIME_INTERVAL_UPLOADING_CHANGE: Float = 0.5
+
 
         private struct Prompts {
+            static let BEFORE_PRE_CHECK = "Press ESTIMATE and walk around\nto estimate signal quality"
             static let PRE_CHECK_WALKING = "Estimating signal quality\nPlease walk around the starting point"
-            static let STAND_STILL = "Please stand still for a while"
+            static let STAND_STILL = "Please stand still for a while\nbefore you start walking"
             static let READY_TO_WALK = "You may start collecting data"
-            static let CHANGE_LOCATION = "Sinal quality is not good enough\nPlease change location and try again"
-            static let COLLECTING_DATA = "Start walking ...\nPress Stop when you want to stop walking"
+            static let CHANGE_LOCATION = "Signal quality is not good enough\nPlease change location and try again"
+            static let COLLECTING_DATA = "Start walking ...\nPress STOP when you want to stop walking"
             static let WAITING_FOR_UPLOADING = "Analysing and uploading data ...\nYou may continue your activity"
             
             // results prompts
-            static let FAIL_TIME_OUT = "Time out\nPlease try again"
+            static let FAIL_TIME_OUT = "Time out! You walked too long\nPlease try again"
             static let FAIL_LOW_ACCURACY = "Bad GPS signal\nPlease change location and try again"
             static let FAIL_LOW_GPS_POINTS = "Bad GPS signal\nPlease change location and try again"
             static let FAIL_BAD_NETWORK = "Bad Internet connection\nPlease change location and try again"
             static let FAIL_LOW_WALKING_TIME = "Not enough data\nPlease walk for a longer time"
-            static let SUCCESS = "Data collection is finished"
+            static let SUCCESS = "Data collection is sucessful"
         }
         private struct States {
             static let FAIL_TIME_OUT = "FAIL_TIME_OUT"
@@ -95,6 +101,14 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             static let SUCCESS = "SUCCESS"
         }
     }
+    private struct dataPoints {
+        let latitude: Double
+        let longitude: Double
+        let accuracy: Double
+        let locTimestamp: NSDate
+    }
+    var dataModel: DataModel!
+    
     
     @IBOutlet weak var walkTimerLabel: UILabel!
     
@@ -111,7 +125,8 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     private var timerOfUploading: NSTimer!
     private var timerOfWalking: NSTimer!
     
-    private var accuracyCollectedData = [Double]()
+//    private var accuracyCollectedData = [Double]()
+    private var collectedData = [dataPoints]()
     private var uploadedDataNum: Int = 0
     private var startTime_uploadedNum_Dict = [NSDate: Int]()
     
@@ -162,7 +177,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             self.stopDataCollectionOutlet!.hidden = true
             self.startDataCollectionOutlet!.hidden = true
             self.failedAndBackButtonOutlet!.hidden = true
-            self.promptsLabel!.hidden = true
+//            self.promptsLabel!.hidden = true
             self.timeProgress!.hidden = true
             
             self.startButtonOutlet!.hidden = false
@@ -176,6 +191,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             self.step2ImageView!.image = UIImage(named: "on_2")
             self.step3ImageView!.image = UIImage(named: "on_3")
             
+            self.promptsLabel.text = Constants.Prompts.BEFORE_PRE_CHECK
             self.walkTimerLabel!.hidden = true
             
 //            //debug
@@ -231,7 +247,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     @IBOutlet weak var startDataCollectionOutlet: UIButton!
     @IBAction func startDataCollection(sender: UIButton) {
         
-        accuracyCollectedData.removeAll(keepCapacity: false)
+        collectedData.removeAll(keepCapacity: false)
         uploadedDataNum = 0
         sender.hidden = true
         promptsLabel.text = Constants.Prompts.STAND_STILL
@@ -275,8 +291,11 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     @IBOutlet weak var failedAndBackButtonOutlet: UIButton!
     @IBAction func failedAndBackButton(sender: UIButton) {
         sender.hidden = true
+        failedAndBackButtonOutlet.backgroundColor = UIColor.redColor()
+        failedAndBackButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
         startButtonOutlet!.hidden = false
-        promptsLabel!.hidden = true
+//        promptsLabel!.hidden = true
+        promptsLabel!.text = Constants.Prompts.BEFORE_PRE_CHECK
         
         self.leftRightArrowImageView!.hidden = true
         self.rightRightArrowImageView!.hidden = true
@@ -326,10 +345,11 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         stopDataCollectionOutlet!.hidden = true
         startDataCollectionOutlet!.hidden = true
         failedAndBackButtonOutlet!.hidden = true
-        promptsLabel!.hidden = true
+//        promptsLabel!.hidden = true
         timeProgress!.hidden = true
         
         walkTimerLabel!.hidden = true
+        self.promptsLabel.text = Constants.Prompts.BEFORE_PRE_CHECK
         
 //        //debug
 //        self.collectedDataLabel.hidden = true
@@ -359,8 +379,12 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
 
             let state: String = checkState(passedSeconds)
             uploadMarker(state)
-            
             failedAndBackButtonOutlet!.hidden = false
+            if state == Constants.States.SUCCESS + "_col:\(collectedData.count)" {
+                failedAndBackButtonOutlet.backgroundColor = UIColor(red: 0, green: 122.0/255.0, blue: 1.0, alpha: 1.0)
+                failedAndBackButtonOutlet.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            }
+            
             abortButtonOutlet!.hidden = true
 
         }
@@ -493,20 +517,41 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
             promptsLabel.text = Constants.Prompts.FAIL_LOW_GPS_POINTS
             return Constants.States.FAIL_LOW_GPS_POINTS
         }
-        else if getAverageFromDoubleArray(self.accuracyCollectedData) > Constants.AVERAGE_ACCURACY_THREHOLD {
+        else if getAverageAccuracy(self.collectedData) > Constants.AVERAGE_ACCURACY_THREHOLD {
             promptsLabel.text = Constants.Prompts.FAIL_LOW_ACCURACY
             return Constants.States.FAIL_LOW_ACCURACY
         }
-        else if Double(uploadedDataPoint) / Double(accuracyCollectedData.count) <= Constants.UPLOADED_PERCENTAGE {
+        else if Double(uploadedDataPoint) / Double(collectedData.count) <= Constants.UPLOADED_PERCENTAGE {
             promptsLabel.text = Constants.Prompts.FAIL_BAD_NETWORK
             return Constants.States.FAIL_BAD_NETWORK
         }
         promptsLabel.text = Constants.Prompts.SUCCESS
-        return Constants.States.SUCCESS + "_col:\(accuracyCollectedData.count)"
+        
+        // plot
+        // save data
+        let finishTime = NSDate()
+//        if dataModel == nil {
+//            dataModel = DataModel()
+//            if let (speedArray, timeArray) = dataModel.getExistingRecordsForToday(finishTime) {
+//                chartDelegate?.initChartWithExistingRecords(speedArray, timeArray: timeArray)
+//            }
+//        }
+        var speed = getAverageSpeed(collectedData)
+        speed = speed >= 4.0 ? 4.0 : speed
+        let (oldday, timeSec) = dataModel.saveData(finishTime, speed: speed, duration: 0, latitude: 0, longitude: 0, accuracy: 0, locTimestamp: finishTime)
+        if oldday == false { // new day
+            
+            // notify core plot Chart VC
+            chartDelegate?.updateChart(dataModel.dateOfTodayStr, speed: speed, time: timeSec)
+        } else {
+            // notify core plot Chart VC
+            chartDelegate?.updateChart(speed, time: timeSec)
+        }
+        return Constants.States.SUCCESS + "_col:\(collectedData.count)"
     }
     
     private func walkingPercentageCheck(seconds: NSTimeInterval) -> Double {
-        return Double(accuracyCollectedData.count) / (seconds - Constants.START_WAITING_TIME - Constants.STOP_WAITING_TIME)
+        return Double(collectedData.count) / (seconds - Constants.START_WAITING_TIME - Constants.STOP_WAITING_TIME)
     }
     
     private func precheck() -> Bool {
@@ -529,7 +574,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     
     //delegate function for data collection
     func collectData(latitude: Double, longitude: Double, accuracy: Double, locTimestamp: NSDate) {
-        accuracyCollectedData.append(accuracy)
+        collectedData.append(dataPoints(latitude: latitude, longitude: longitude, accuracy: accuracy, locTimestamp: locTimestamp))
         self.saveRemotely(latitude, longitude: longitude, accuracy: accuracy, locTimestamp: locTimestamp, startTime: startTime)
         
 //        collectedDataLabel.text = "col \(accuracyCollectedData.count)"
@@ -553,6 +598,29 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         return sum / Double(array.count)
     }
     
+    private func getAverageAccuracy(pointsArray: [dataPoints]) -> Double {
+        var sum: Double = 0
+        for point in pointsArray {
+            sum += point.accuracy
+        }
+        return sum / Double(pointsArray.count)
+    }
+    
+    private func getAverageSpeed(pointsArray: [dataPoints]) -> Double {
+        var sum: Double = 0
+        for var i = 1; i < pointsArray.count; ++i {
+            let loc1 = CLLocation(latitude: pointsArray[i-1].latitude, longitude: pointsArray[i-1].longitude)
+            let loc2 = CLLocation(latitude: pointsArray[i].latitude, longitude: pointsArray[i].longitude)
+            let distance = loc1.distanceFromLocation(loc2)
+            
+            let time1 = pointsArray[i-1].locTimestamp
+            let time2 = pointsArray[i].locTimestamp
+            let timeDiff = time2.timeIntervalSinceDate(time1)
+            sum += distance / timeDiff
+        }
+        return sum / Double(pointsArray.count)
+    }
+    
     private func getNumOfGoodAccuracy(array: [Double]) -> Int {
         var num: Int = 0
         for point in array {
@@ -568,7 +636,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
         // save all data locally and remotely
         let point = PFGeoPoint(latitude:latitude, longitude: longitude)
         
-        var record = PFObject(className: "DataCollection")
+        let record = PFObject(className: "DataCollection")
         
         record["user"] = firstUIViewController.userID
         record["location"] = point
@@ -591,7 +659,7 @@ class DataCollectionViewController: UIViewController, DataCollectionDelegate {
     }
     
     private func uploadMarker(state: String) {
-        var marker = PFObject(className: "Markers")
+        let marker = PFObject(className: "Markers")
         marker["user"] = firstUIViewController.userID
         marker["startTime"] = startTime
         marker["finishTime"] = finishTime
